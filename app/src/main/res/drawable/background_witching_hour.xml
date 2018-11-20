@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="@color/witching_hour1"
+        android:endColor="@color/witching_hour2"
+        android:angle="-270" />
+</shape>

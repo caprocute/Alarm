@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Alarm</string>
+    <string name="title_home">Alarm</string>
+    <string name="title_dashboard">History</string>
+    <string name="title_notifications">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- pref String -->
+    <string name="pref_sound">Sound</string>
+    <string name="pref_volume">Gradually increase volume</string>
+    <string name="pref_auto_dismiss">Auto-dismiss</string>
+    <string name="pref_volume_time"> seconds</string>
+    <string name="pref_off">off</string>
+    <string name="pref_on">on</string>
+    <string name="pref_build_in_speaker">Use the built-in speaker</string>
+    <string name="pref_build_in_speaker_note">Always ring on phone speakers</string>
+    <string name="pref_alarm_mute">Alarm mute duration</string>
+    <string name="pref_general">General</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_default_alarm_setting">Default alarm setting</string>
+    <string name="pref_default_alarm_setting_note">Applied when setting a new alarm</string>
+    <string name="pref_display_next_alarm">Display next alarm</string>
+    <string name="pref_prevent_turn_off">Prevent power off when ringging</string>
+    <string name="pref_prevent_turn_off_note">Prevent power off when ringging</string>
+
+
+</resources>

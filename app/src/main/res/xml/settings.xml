@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- opens a subscreen of settings -->
+
+    <PreferenceCategory android:title="@string/pref_sound">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@android:array/config_keySystemUuidMapping"
+            android:entryValues="@android:array/config_keySystemUuidMapping"
+            android:key="list_preference_1"
+            android:title="@string/pref_volume" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference_1"
+            android:summaryOff="@string/pref_off"
+            android:summaryOn="@string/pref_on"
+            android:title="@string/pref_auto_dismiss" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_box_preference_1"
+            android:summary="@string/pref_build_in_speaker_note"
+            android:title="@string/pref_build_in_speaker" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@android:array/config_keySystemUuidMapping"
+            android:entryValues="@android:array/config_keySystemUuidMapping"
+            android:key="list_preference_1"
+            android:title="@string/pref_alarm_mute" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_general">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@android:array/config_keySystemUuidMapping"
+            android:entryValues="@android:array/config_keySystemUuidMapping"
+            android:key="list_preference_1"
+            android:title="@string/pref_theme" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_box_preference_1"
+            android:title="@string/pref_display_next_alarm" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_box_preference_1"
+            android:summary="@string/pref_prevent_turn_off_note"
+            android:title="@string/pref_prevent_turn_off" />
+    </PreferenceCategory>
+</PreferenceScreen>
