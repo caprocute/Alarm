@@ -1,5 +1,8 @@
 package vious.untral.kaku.alarm.dummy;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +56,7 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
+    public static class DummyItem implements Parcelable {
         public final String id;
         public final String content;
         public final String details;
@@ -64,9 +67,39 @@ public class DummyContent {
             this.details = details;
         }
 
+        public static final Creator<DummyItem> CREATOR = new Creator<DummyItem>() {
+            @Override
+            public DummyItem createFromParcel(Parcel in) {
+                return new DummyItem(in);
+            }
+
+            @Override
+            public DummyItem[] newArray(int size) {
+                return new DummyItem[size];
+            }
+        };
+
+        protected DummyItem(Parcel in) {
+            id = in.readString();
+            content = in.readString();
+            details = in.readString();
+        }
+
         @Override
         public String toString() {
             return content;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(id);
+            parcel.writeString(content);
+            parcel.writeString(details);
         }
     }
 }

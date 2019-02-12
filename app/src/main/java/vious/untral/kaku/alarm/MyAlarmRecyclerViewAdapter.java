@@ -1,6 +1,10 @@
 package vious.untral.kaku.alarm;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +24,10 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
 
     private final List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context mContext;
 
-    public MyAlarmRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyAlarmRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener, Context context) {
+        mContext = context;
         mValues = items;
         mListener = listener;
     }
@@ -46,9 +52,18 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
+                    openSelectedAlarm(holder.mItem);
                 }
             }
         });
+    }
+
+    private void openSelectedAlarm(DummyItem mItem) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("alarm", mItem);
+
+        Intent intent = new Intent(mContext, AlarmDetailActivity.class);
+        mContext.startActivity(intent, bundle);
     }
 
     @Override

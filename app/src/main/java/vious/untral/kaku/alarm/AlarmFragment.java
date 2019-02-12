@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import vious.untral.kaku.alarm.dummy.DummyContent;
 import vious.untral.kaku.alarm.dummy.DummyContent.DummyItem;
@@ -69,7 +70,13 @@ public class AlarmFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener, getActivity()));
+            recyclerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         return view;
     }
