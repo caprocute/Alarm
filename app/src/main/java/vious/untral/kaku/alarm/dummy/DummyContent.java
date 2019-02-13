@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vious.untral.kaku.alarm.Model.Alarm;
+
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
@@ -19,29 +21,29 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<Alarm> ITEMS = new ArrayList<Alarm>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, Alarm> ITEM_MAP = new HashMap<String, Alarm>();
 
     private static final int COUNT = 25;
 
     static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
+            addItem(createAlarm(i));
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(Alarm item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        ITEM_MAP.put("data", item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static Alarm createAlarm(int position) {
+        return new Alarm();
     }
 
     private static String makeDetails(int position) {
@@ -56,50 +58,5 @@ public class DummyContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem implements Parcelable {
-        public final String id;
-        public final String content;
-        public final String details;
 
-        public DummyItem(String id, String content, String details) {
-            this.id = id;
-            this.content = content;
-            this.details = details;
-        }
-
-        public static final Creator<DummyItem> CREATOR = new Creator<DummyItem>() {
-            @Override
-            public DummyItem createFromParcel(Parcel in) {
-                return new DummyItem(in);
-            }
-
-            @Override
-            public DummyItem[] newArray(int size) {
-                return new DummyItem[size];
-            }
-        };
-
-        protected DummyItem(Parcel in) {
-            id = in.readString();
-            content = in.readString();
-            details = in.readString();
-        }
-
-        @Override
-        public String toString() {
-            return content;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel parcel, int i) {
-            parcel.writeString(id);
-            parcel.writeString(content);
-            parcel.writeString(details);
-        }
-    }
 }

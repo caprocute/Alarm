@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.dummy.DummyContent;
-import vious.untral.kaku.alarm.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
@@ -111,6 +111,6 @@ public class AlarmFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Alarm item);
     }
 }

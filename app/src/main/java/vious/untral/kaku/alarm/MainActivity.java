@@ -20,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity implements HistoryFragment.OnFragmentInteractionListener,AlarmFragment.OnListFragmentInteractionListener {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Alarm item) {
 
     }
 

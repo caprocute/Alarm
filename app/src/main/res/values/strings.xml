@@ -6,7 +6,37 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="ok">OK</string>
+    <string name="weekdays">Weekdays</string>
+    <string name="weekends">Weekends</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
 
+    <string name="mondayShort">Mon</string>
+    <string name="tuesdayShort">Tu</string>
+    <string name="wednesdayShort">Wed</string>
+    <string name="thursdayShort">Thur</string>
+    <string name="fridayShort">Fri</string>
+    <string name="saturdayShort">Sat</string>
+    <string name="sundayShort">Sun</string>
+
+    <string name="mission_alarm">Mission Alarm</string>
+    <string name="repeat">Repeat</string>
+    <string name="ringtone">Ringtone</string>
+    <string name="snooze">Snooze</string>
+    <string name="label">Label</string>
+    <string name="none">None</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+    <string name="remain_part1">Alarm set for </string>
+    <string name="remain_part2">from now</string>
     <!-- pref String -->
     <string name="pref_sound">Sound</string>
     <string name="pref_volume">Gradually increase volume</string>
