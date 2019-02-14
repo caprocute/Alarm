@@ -2,12 +2,32 @@ package vious.untral.kaku.alarm;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import vious.untral.kaku.alarm.Model.Alarm;
 
 public class AlarmDetailActivity extends AppCompatActivity {
 
@@ -22,10 +42,185 @@ public class AlarmDetailActivity extends AppCompatActivity {
             window.setBackgroundDrawable(background);
         }
     }
+
+    private Alarm mAlarm;
+    private TextView txtMissionAlarm, txtTimeRemain, txtRepeat, txtRingtone, txtSnooze, txtLabel;
+    private Button btn10m, btnD10m, btn1h, btnd1h, btnCancel, btnDel, btnOk;
+    private SeekBar seekVolume;
+    private Switch switchVib;
+    private ImageView imageView;
+    private boolean[] weekkenddays = new boolean[]{true, true, true, true, true, true, true};
+    private boolean[] weekdays = new boolean[]{true, true, true, true, true, false, false};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_detail);
         setStatusBarGradiant(this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        mAlarm = bundle.getParcelable("alarm");
+        init();
+        loadAlarmData(mAlarm);
+    }
+
+    private void init() {
+        txtLabel = (TextView) findViewById(R.id.txtLabel);
+        txtMissionAlarm = (TextView) findViewById(R.id.txtMissionAlarm);
+        txtTimeRemain = (TextView) findViewById(R.id.txtTimeRemain);
+        txtRingtone = (TextView) findViewById(R.id.txtRingtone);
+        txtSnooze = (TextView) findViewById(R.id.txtSnooze);
+        txtRepeat = (TextView) findViewById(R.id.txtRepeat);
+
+        btn10m = (Button) findViewById(R.id.btn10m);
+        btnD10m = (Button) findViewById(R.id.btnD10m);
+        btn1h = (Button) findViewById(R.id.btn1h);
+        btnd1h = (Button) findViewById(R.id.btnd1h);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnDel = (Button) findViewById(R.id.btnDel);
+        btnOk = (Button) findViewById(R.id.btnOk);
+
+        seekVolume = (SeekBar) findViewById(R.id.seekVolume);
+
+        switchVib = (Switch) findViewById(R.id.switchVib);
+
+        imageView = (ImageView) findViewById(R.id.imageView2);
+    }
+
+    private void loadAlarmData(Alarm mAlarm) {
+        if (mAlarm != null) {
+            switch (mAlarm.getMissionAlarm()) {
+                case 0:
+                    txtMissionAlarm.setText(R.string.Default);
+                    imageView.setImageDrawable(getDrawable(R.drawable.alarm));
+                    break;
+                case 1:
+                    txtMissionAlarm.setText(R.string.Picture);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_camera));
+                    break;
+                case 2:
+                    txtMissionAlarm.setText(R.string.Shake);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_vibration));
+                    break;
+                case 3:
+                    txtMissionAlarm.setText(R.string.Math);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_calculator));
+                    break;
+                case 4:
+                    txtMissionAlarm.setText(R.string.Scan);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_qrcode));
+                    break;
+            }
+        }
+
+        txtTimeRemain.setText(calTimeRemain(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()));
+        txtRepeat.setText(getRepeat(mAlarm.getRepeat()));
+        if (mAlarm.getRingtone() != null) {
+            txtRingtone.setText(mAlarm.getRingtone().getFile());
+        }
+        txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
+        txtLabel.setText(mAlarm.getLabel());
+    }
+
+    private String getRepeat(boolean[] repeat) {
+        String re = "";
+        if (Arrays.equals(weekdays, repeat)) {
+            re = getResources().getString(R.string.weekdays);
+        } else if (Arrays.equals(weekkenddays, repeat)) {
+            re = getResources().getString(R.string.weekends);
+        } else {
+            for (int i = 0; i < 7; i++) {
+                if (repeat[i] == true) {
+                    switch (i) {
+                        case 0:
+                            re += getResources().getString(R.string.mondayShort);
+                            break;
+                        case 1:
+                            re += getResources().getString(R.string.tuesdayShort);
+                            break;
+                        case 2:
+                            re += getResources().getString(R.string.wednesdayShort);
+                            break;
+                        case 3:
+                            re += getResources().getString(R.string.thursdayShort);
+                            break;
+                        case 4:
+                            re += getResources().getString(R.string.fridayShort);
+                            break;
+                        case 5:
+                            re += getResources().getString(R.string.saturday);
+                            break;
+                        case 6:
+                            re += getResources().getString(R.string.sundayShort);
+                            break;
+                    }
+                    re += ", ";
+                }
+            }
+        }
+        return re.substring(0, (re.length() - 1));
+    }
+
+    private String calTimeRemain(final int hour, final int minute, final boolean[] repeat) {
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      DateTime now = DateTime.now();
+
+                                      DateTime alarmDate = new DateTime(now.year().get(), now.monthOfYear().get(), now.dayOfMonth().get(), hour, minute);
+
+                                      boolean flagStop = true;
+
+                                      while (flagStop) {
+                                          for (int i = 0; i < repeat.length; i++) {
+                                              if (repeat[i] == true) {
+                                                  DateTime nextDay = null;
+                                                  switch (i) {
+                                                      case 0:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.MONDAY);
+                                                          break;
+                                                      case 1:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.TUESDAY);
+                                                          break;
+                                                      case 2:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.WEDNESDAY);
+                                                          break;
+                                                      case 3:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.THURSDAY);
+                                                          break;
+                                                      case 4:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.FRIDAY);
+                                                          break;
+                                                      case 5:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.SATURDAY);
+                                                          break;
+                                                      case 6:
+                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.SUNDAY);
+                                                          break;
+                                                  }
+
+                                                  if (nextDay.getMillis() > now.getMillis()) {
+                                                      long durationBetweenDate = nextDay.getMillis() - now.getMillis();
+                                                      long secondsCAL = durationBetweenDate / 1000;
+                                                      long minutesCAL = secondsCAL / 60;
+                                                      long hoursCAL = minutesCAL / 60;
+                                                      long daysCAL = hoursCAL / 24;
+                                                      Log.d("hieuhk", "run: " + daysCAL + " days " +
+                                                              (hoursCAL - daysCAL * 24) + " hours " +
+                                                              (minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) + " minutes");
+                                                      flagStop = false;
+                                                      break;
+                                                  }
+                                              }
+                                          }
+                                          if (flagStop) alarmDate = alarmDate.plusWeeks(1);
+                                      }
+
+                                  }
+                              },
+                0,
+                30000);
+        return "";
     }
 }

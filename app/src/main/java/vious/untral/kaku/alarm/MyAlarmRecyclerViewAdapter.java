@@ -68,12 +68,16 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                 holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm));
                 break;
             case 1:
+                holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera));
                 break;
             case 2:
+                holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration));
                 break;
             case 3:
+                holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator));
                 break;
             case 4:
+                holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode));
                 break;
         }
     }
@@ -122,7 +126,8 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         bundle.putParcelable("alarm", mItem);
 
         Intent intent = new Intent(mContext, AlarmDetailActivity.class);
-        mContext.startActivity(intent, bundle);
+        intent.putExtras(bundle);
+        mContext.startActivity(intent);
     }
 
     @Override

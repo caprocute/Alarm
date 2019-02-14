@@ -39,12 +39,12 @@ public class Alarm implements Parcelable {
     }
 
     public Alarm() {
-        missionAlarm = 0;
+        missionAlarm = 3;
         hour = 6;
         minute = 30;
 
         Arrays.fill(repeat, false);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 2; i++) {
             repeat[i] = true;
         }
         ringtone = null;
