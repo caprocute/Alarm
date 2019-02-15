@@ -41,8 +41,10 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
+                android:id="@+id/missionLay"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/alarm_item_back">
+                android:background="@drawable/alarm_item_back"
+                android:clickable="true">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -51,6 +53,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -60,10 +63,12 @@
                     android:id="@+id/textView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="false"
                     android:text="@string/mission_alarm"
                     app:layout_constraintBottom_toTopOf="@+id/txtMissionAlarm"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +83,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="false"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

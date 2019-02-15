@@ -41,6 +41,7 @@
     <string name="none">None</string>
     <string name="minutes">minutes</string>
     <string name="hours">hours</string>
+    <string name="days">days</string>
     <string name="remain_part1">Alarm set for </string>
     <string name="remain_part2">from now</string>
     <!-- pref String -->

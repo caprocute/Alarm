@@ -5,9 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -28,8 +33,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.Model.MissionAlarmActivity;
 
-public class AlarmDetailActivity extends AppCompatActivity {
+public class AlarmDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void setStatusBarGradiant(Activity activity) {
@@ -46,11 +52,24 @@ public class AlarmDetailActivity extends AppCompatActivity {
     private Alarm mAlarm;
     private TextView txtMissionAlarm, txtTimeRemain, txtRepeat, txtRingtone, txtSnooze, txtLabel;
     private Button btn10m, btnD10m, btn1h, btnd1h, btnCancel, btnDel, btnOk;
+    private final int TIME_REMAIN = 1;
     private SeekBar seekVolume;
     private Switch switchVib;
     private ImageView imageView;
     private boolean[] weekkenddays = new boolean[]{true, true, true, true, true, true, true};
     private boolean[] weekdays = new boolean[]{true, true, true, true, true, false, false};
+    private final Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == TIME_REMAIN) {
+                Bundle bundle = msg.getData();
+                String s = bundle.getString("update");
+                txtTimeRemain.setText(s);
+            }
+            super.handleMessage(msg);
+        }
+    };
+    private TimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,63 +83,9 @@ public class AlarmDetailActivity extends AppCompatActivity {
         loadAlarmData(mAlarm);
     }
 
-    private void init() {
-        txtLabel = (TextView) findViewById(R.id.txtLabel);
-        txtMissionAlarm = (TextView) findViewById(R.id.txtMissionAlarm);
-        txtTimeRemain = (TextView) findViewById(R.id.txtTimeRemain);
-        txtRingtone = (TextView) findViewById(R.id.txtRingtone);
-        txtSnooze = (TextView) findViewById(R.id.txtSnooze);
-        txtRepeat = (TextView) findViewById(R.id.txtRepeat);
-
-        btn10m = (Button) findViewById(R.id.btn10m);
-        btnD10m = (Button) findViewById(R.id.btnD10m);
-        btn1h = (Button) findViewById(R.id.btn1h);
-        btnd1h = (Button) findViewById(R.id.btnd1h);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnDel = (Button) findViewById(R.id.btnDel);
-        btnOk = (Button) findViewById(R.id.btnOk);
-
-        seekVolume = (SeekBar) findViewById(R.id.seekVolume);
-
-        switchVib = (Switch) findViewById(R.id.switchVib);
-
-        imageView = (ImageView) findViewById(R.id.imageView2);
-    }
-
-    private void loadAlarmData(Alarm mAlarm) {
-        if (mAlarm != null) {
-            switch (mAlarm.getMissionAlarm()) {
-                case 0:
-                    txtMissionAlarm.setText(R.string.Default);
-                    imageView.setImageDrawable(getDrawable(R.drawable.alarm));
-                    break;
-                case 1:
-                    txtMissionAlarm.setText(R.string.Picture);
-                    imageView.setImageDrawable(getDrawable(R.drawable.ic_camera));
-                    break;
-                case 2:
-                    txtMissionAlarm.setText(R.string.Shake);
-                    imageView.setImageDrawable(getDrawable(R.drawable.ic_vibration));
-                    break;
-                case 3:
-                    txtMissionAlarm.setText(R.string.Math);
-                    imageView.setImageDrawable(getDrawable(R.drawable.ic_calculator));
-                    break;
-                case 4:
-                    txtMissionAlarm.setText(R.string.Scan);
-                    imageView.setImageDrawable(getDrawable(R.drawable.ic_qrcode));
-                    break;
-            }
-        }
-
-        txtTimeRemain.setText(calTimeRemain(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()));
-        txtRepeat.setText(getRepeat(mAlarm.getRepeat()));
-        if (mAlarm.getRingtone() != null) {
-            txtRingtone.setText(mAlarm.getRingtone().getFile());
-        }
-        txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
-        txtLabel.setText(mAlarm.getLabel());
-    }
+    private ConstraintLayout missionLay;
+    private String TAG = "hieuhk";
+    private boolean updateAlarmFlag = false;
 
     private String getRepeat(boolean[] repeat) {
         String re = "";
@@ -161,8 +126,106 @@ public class AlarmDetailActivity extends AppCompatActivity {
         return re.substring(0, (re.length() - 1));
     }
 
+    private Timer t;
+    private int MISSION_ALARM_CODE = 1;
+
+    private void init() {
+        txtLabel = (TextView) findViewById(R.id.txtLabel);
+        txtMissionAlarm = (TextView) findViewById(R.id.txtMissionAlarm);
+        txtTimeRemain = (TextView) findViewById(R.id.txtTimeRemain);
+        txtRingtone = (TextView) findViewById(R.id.txtRingtone);
+        txtSnooze = (TextView) findViewById(R.id.txtSnooze);
+        txtRepeat = (TextView) findViewById(R.id.txtRepeat);
+
+        btn10m = (Button) findViewById(R.id.btn10m);
+        btn10m.setOnClickListener(this);
+        btnD10m = (Button) findViewById(R.id.btnD10m);
+        btnD10m.setOnClickListener(this);
+        btn1h = (Button) findViewById(R.id.btn1h);
+        btn1h.setOnClickListener(this);
+        btnd1h = (Button) findViewById(R.id.btnd1h);
+        btnd1h.setOnClickListener(this);
+
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnDel = (Button) findViewById(R.id.btnDel);
+        btnOk = (Button) findViewById(R.id.btnOk);
+        timePicker = (TimePicker) findViewById(R.id.timePicker1);
+
+        seekVolume = (SeekBar) findViewById(R.id.seekVolume);
+
+        switchVib = (Switch) findViewById(R.id.switchVib);
+
+        imageView = (ImageView) findViewById(R.id.imageView2);
+
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
+                if (updateAlarmFlag) {
+                    mAlarm.setHour(timePicker.getCurrentHour());
+                    mAlarm.setMinute(timePicker.getCurrentMinute());
+                    Log.d("hieuhk ", "onTimeChanged: " + timePicker.getCurrentHour() + " " + timePicker.getCurrentMinute());
+                    calTimeRemain(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), mAlarm.getRepeat());
+                }
+            }
+        });
+
+        missionLay = (ConstraintLayout) findViewById(R.id.missionLay);
+        missionLay.setOnClickListener(this);
+    }
+
+    private void loadAlarmData(Alarm mAlarm) {
+        if (mAlarm != null) {
+            switch (mAlarm.getMissionAlarm()) {
+                case 0:
+                    txtMissionAlarm.setText(R.string.Default);
+                    imageView.setImageDrawable(getDrawable(R.drawable.alarm));
+                    break;
+                case 1:
+                    txtMissionAlarm.setText(R.string.Picture);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_camera));
+                    break;
+                case 2:
+                    txtMissionAlarm.setText(R.string.Shake);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_vibration));
+                    break;
+                case 3:
+                    txtMissionAlarm.setText(R.string.Math);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_calculator));
+                    break;
+                case 4:
+                    txtMissionAlarm.setText(R.string.Scan);
+                    imageView.setImageDrawable(getDrawable(R.drawable.ic_qrcode));
+                    break;
+            }
+        }
+
+
+        txtTimeRemain.setText(calTimeRemain(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()));
+        txtRepeat.setText(getRepeat(mAlarm.getRepeat()));
+        if (mAlarm.getRingtone() != null) {
+            txtRingtone.setText(mAlarm.getRingtone().getFile());
+        }
+        txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
+        txtLabel.setText(mAlarm.getLabel());
+
+        updateAlarmFlag = false;
+        timePicker.setCurrentHour(mAlarm.getHour());
+        timePicker.setCurrentMinute(mAlarm.getMinute());
+        updateAlarmFlag = true;
+    }
+
+    private void updateUI(String data) {
+        Message message = new Message();
+        message.what = TIME_REMAIN;
+        Bundle bundle = new Bundle();
+        bundle.putString("update", data);
+        message.setData(bundle);
+        uiHandler.sendMessage(message);
+    }
+
     private String calTimeRemain(final int hour, final int minute, final boolean[] repeat) {
-        Timer t = new Timer();
+        if (t != null) t.cancel();
+        t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
                                   @Override
                                   public void run() {
@@ -206,9 +269,17 @@ public class AlarmDetailActivity extends AppCompatActivity {
                                                       long minutesCAL = secondsCAL / 60;
                                                       long hoursCAL = minutesCAL / 60;
                                                       long daysCAL = hoursCAL / 24;
-                                                      Log.d("hieuhk", "run: " + daysCAL + " days " +
-                                                              (hoursCAL - daysCAL * 24) + " hours " +
-                                                              (minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) + " minutes");
+
+                                                      String update = getString(R.string.remain_part1);
+
+                                                      if (daysCAL != 0)
+                                                          update += " " + daysCAL + " " + getString(R.string.days);
+                                                      if ((hoursCAL - daysCAL * 24) != 0)
+                                                          update += " " + (hoursCAL - daysCAL * 24) + " " + getString(R.string.hours);
+                                                      if ((minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) != 0)
+                                                          update += " " + (minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) + " " + getString(R.string.minutes);
+
+                                                      updateUI(update);
                                                       flagStop = false;
                                                       break;
                                                   }
@@ -222,5 +293,27 @@ public class AlarmDetailActivity extends AppCompatActivity {
                 0,
                 30000);
         return "";
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn1h:
+                timePicker.setCurrentHour(timePicker.getCurrentHour() + 1);
+                break;
+            case R.id.btn10m:
+                timePicker.setCurrentMinute(timePicker.getCurrentMinute() + 10);
+                break;
+            case R.id.btnD10m:
+                timePicker.setCurrentMinute(timePicker.getCurrentMinute() - 10);
+                break;
+            case R.id.btnd1h:
+                timePicker.setCurrentHour(timePicker.getCurrentHour() - 1);
+                break;
+            case R.id.missionLay:
+                Log.d(TAG, "onClick: hello");
+                startActivityForResult(new Intent(AlarmDetailActivity.this, MissionAlarmActivity.class), MISSION_ALARM_CODE);
+                break;
+        }
     }
 }
