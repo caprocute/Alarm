@@ -24,16 +24,11 @@ import android.widget.TimePicker;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Model.MissionAlarmActivity;
 
 public class AlarmDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
