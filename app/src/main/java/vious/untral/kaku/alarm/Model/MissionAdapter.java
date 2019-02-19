@@ -37,6 +37,7 @@ class MissionAdapter extends RecyclerView.Adapter {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
+        public final TextView txtSetting;
         public final TextView mContentView;
         public final ImageView imageView;
         public Alarm mItem;
@@ -47,6 +48,7 @@ class MissionAdapter extends RecyclerView.Adapter {
             mIdView = (TextView) view.findViewById(R.id.item_number);
             imageView = (ImageView) view.findViewById(R.id.imageView);
             mContentView = (TextView) view.findViewById(R.id.content);
+            txtSetting = (TextView) view.findViewById(R.id.txtSetting);
         }
 
         @Override

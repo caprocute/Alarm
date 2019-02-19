@@ -3,11 +3,18 @@ package vious.untral.kaku.alarm.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
 
 public class Alarm implements Parcelable {
+
+    private int missionAlarm;
+    private int hour;
+    private int id;
+    private int minute;
+    private boolean[] repeat = new boolean[7];
     public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
         @Override
         public Alarm createFromParcel(Parcel in) {
@@ -19,12 +26,6 @@ public class Alarm implements Parcelable {
             return new Alarm[size];
         }
     };
-    private int missionAlarm;
-    private int hour;
-    private int id;
-    private int minute;
-    private boolean[] repeat = new boolean[7];
-    private URL ringtone;
     private int snooze;
     private String label;
 
@@ -38,6 +39,8 @@ public class Alarm implements Parcelable {
         label = in.readString();
     }
 
+    private String ringtone;
+
     public Alarm() {
         missionAlarm = 3;
         hour = 6;
@@ -47,7 +50,8 @@ public class Alarm implements Parcelable {
         for (int i = 0; i < 2; i++) {
             repeat[i] = true;
         }
-        ringtone = null;
+        ringtone = "/sdcard/Download/AmThamBenEm-SonTungMTP-4066476.mp3";
+
         snooze = 0;
         label = "";
     }
@@ -92,11 +96,11 @@ public class Alarm implements Parcelable {
         this.repeat = repeat;
     }
 
-    public URL getRingtone() {
+    public String getRingtone() {
         return ringtone;
     }
 
-    public void setRingtone(URL ringtone) {
+    public void setRingtone(String ringtone) {
         this.ringtone = ringtone;
     }
 
@@ -116,6 +120,7 @@ public class Alarm implements Parcelable {
         this.label = label;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -128,6 +133,7 @@ public class Alarm implements Parcelable {
         parcel.writeInt(id);
         parcel.writeInt(minute);
         parcel.writeBooleanArray(repeat);
+        parcel.writeString(ringtone);
         parcel.writeInt(snooze);
         parcel.writeString(label);
     }

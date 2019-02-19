@@ -1,6 +1,8 @@
 package vious.untral.kaku.alarm.Model;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.joda.time.DateTime;
 
 import java.util.List;
 
+import vious.untral.kaku.alarm.AlarmScreenActivity;
 import vious.untral.kaku.alarm.BuildConfig;
 import vious.untral.kaku.alarm.R;
 
@@ -21,12 +27,14 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
     private int mWidth;
     private int mHeight;
     private Context context;
+    private Alarm alarm;
 
-    public ImageCardAdapter(List<Mission> items, int width, int height, Context context) {
+    public ImageCardAdapter(List<Mission> items, int width, int height, Context context, Alarm alarm) {
         this.items = items;
         this.context = context;
         mWidth = width;
         mHeight = height;
+        this.alarm = alarm;
     }
 
     public ImageCardAdapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -48,34 +56,62 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onBindViewHolder: position:" + position);
         }
-        Mission item = items.get(position);
+        final Mission item = items.get(position);
         switch (item.getMissionID()) {
             case 0:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.alarm));
                 holder.textView.setText(context.getText(R.string.Default));
+                holder.txtSetting.setVisibility(View.GONE);
                 break;
             case 1:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_camera));
+                holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Picture));
                 break;
             case 2:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_vibration));
+                holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Shake));
                 break;
             case 3:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_calculator));
+                holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Math));
                 break;
             case 4:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_qrcode));
+                holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Scan));
                 break;
         }
         holder.itemView.setTag(position);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Helllo bitches", Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, AlarmScreenActivity.class)
+                        .putExtra("alarm", createDemo(alarm, position))
+                        .putExtra("isdemo", true));
+            }
+        });
+    }
+
+    private Alarm createDemo(Alarm alarm, int position) {
+        Alarm demoAlarm = alarm;
+        demoAlarm.setMissionAlarm(position);
+
+        DateTime dt = new DateTime();  // current time
+        int min = dt.getMinuteOfHour();     // gets the current month
+        int hours = dt.getHourOfDay(); // gets hour of day
+
+        demoAlarm.setHour(hours);
+        demoAlarm.setMinute(min);
+
+        return demoAlarm;
     }
 
     @Override
@@ -104,7 +140,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
      */
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
-        public TextView textView;
+        public TextView textView, txtSetting;
         public ImageView imageView;
 
         public ViewHolder(View itemView) {
@@ -112,6 +148,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
             image = (ImageView) itemView.findViewById(R.id.imageView6);
             textView = (TextView) itemView.findViewById(R.id.textView6);
             imageView = (ImageView) itemView.findViewById(R.id.imageView7);
+            txtSetting = (TextView) itemView.findViewById(R.id.txtSetting);
         }
     }
 

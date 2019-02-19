@@ -61,6 +61,7 @@
     <string name="pref_display_next_alarm">Display next alarm</string>
     <string name="pref_prevent_turn_off">Prevent power off when ringging</string>
     <string name="pref_prevent_turn_off_note">Prevent power off when ringging</string>
+    <string name="preview_mode">This is Preview mode</string>
 
 
 </resources>

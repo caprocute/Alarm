@@ -122,7 +122,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private Timer t;
-    private int MISSION_ALARM_CODE = 1;
+    public static int MISSION_ALARM_CODE = 1;
 
     private void init() {
         txtLabel = (TextView) findViewById(R.id.txtLabel);
@@ -198,7 +198,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         txtTimeRemain.setText(calTimeRemain(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()));
         txtRepeat.setText(getRepeat(mAlarm.getRepeat()));
         if (mAlarm.getRingtone() != null) {
-            txtRingtone.setText(mAlarm.getRingtone().getFile());
+            txtRingtone.setText(mAlarm.getRingtone());
         }
         txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
         txtLabel.setText(mAlarm.getLabel());
@@ -307,8 +307,26 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.missionLay:
                 Log.d(TAG, "onClick: hello");
-                startActivityForResult(new Intent(AlarmDetailActivity.this, MissionAlarmActivity.class), MISSION_ALARM_CODE);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", mAlarm);
+
+                Intent intent = new Intent(AlarmDetailActivity.this, MissionAlarmActivity.class);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, MISSION_ALARM_CODE);
+
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == MISSION_ALARM_CODE) {
+                mAlarm = data.getParcelableExtra("alarm");
+                loadAlarmData(mAlarm);
+            }
+
         }
     }
 }

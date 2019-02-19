@@ -106,16 +106,16 @@ public class LinePagerIndicatorDecoration extends RecyclerView.ItemDecoration {
 
         if (progress == 0F) {
             // no swipe, draw a normal indicator
-            float highlightStart = indicatorStartX + itemWidth * highlightPosition * 0.55f;
+            float highlightStart = indicatorStartX + itemWidth * highlightPosition;
 
             c.drawCircle(highlightStart, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
 
         } else {
-            float highlightStart = indicatorStartX + itemWidth * highlightPosition * 0.55f;
+            float highlightStart = indicatorStartX + itemWidth * highlightPosition;
             // calculate partial highlight
             float partialLength = mIndicatorItemLength * progress + mIndicatorItemPadding * progress;
 
-            c.drawCircle(highlightStart + partialLength, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
+            c.drawCircle(highlightStart, indicatorPosY, mIndicatorItemLength / 2F, mPaint);
         }
     }
 
