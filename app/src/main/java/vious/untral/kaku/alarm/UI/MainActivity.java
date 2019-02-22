@@ -1,10 +1,11 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.UI;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -15,18 +16,19 @@ import android.support.design.widget.BottomNavigationView;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import vious.untral.kaku.alarm.fragment.AlarmFragment;
+import vious.untral.kaku.alarm.fragment.HistoryFragment;
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.dummy.DummyContent;
+import vious.untral.kaku.alarm.R;
 
-public class MainActivity extends AppCompatActivity implements HistoryFragment.OnFragmentInteractionListener,AlarmFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements HistoryFragment.OnFragmentInteractionListener, AlarmFragment.OnListFragmentInteractionListener {
 
     private TextView mTextMessage;
-
+    public static int UPDATE_ALARM = 1;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -104,6 +106,37 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
 
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.settings);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == UPDATE_ALARM) {
+                Boolean isdel = data.getBooleanExtra("isdel", false);
+                if (isdel) {
+                    int mPostion = data.getIntExtra("postion", -1);
+                    FragmentManager mFragmentManager = getFragmentManager();
+
+                    if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
+                        AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
+                        alarmFragment.deleteAlarm(mPostion);
+                    }
+                } else {
+                    Alarm mAlarm = data.getParcelableExtra("alarm");
+                    int mPostion = data.getIntExtra("postion", -1);
+
+                    if (mAlarm != null && mPostion != -1) {
+                        FragmentManager mFragmentManager = getFragmentManager();
+
+                        if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
+                            AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
+                            alarmFragment.updateAlarm(mPostion, mAlarm);
+                        }
+                    }
+                }
+            }
         }
     }
 }

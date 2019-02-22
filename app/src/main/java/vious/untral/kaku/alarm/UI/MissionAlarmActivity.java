@@ -1,9 +1,8 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.UI;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -15,22 +14,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import github.hellocsl.layoutmanager.gallery.GalleryLayoutManager;
+import vious.untral.kaku.alarm.Tool.LinePagerIndicatorDecoration;
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Model.BitmapUtils;
-import vious.untral.kaku.alarm.Model.FlingRecycleView;
-import vious.untral.kaku.alarm.Model.ImageCardAdapter;
+import vious.untral.kaku.alarm.Tool.FlingRecycleView;
+import vious.untral.kaku.alarm.Adapter.ImageCardAdapter;
 import vious.untral.kaku.alarm.Model.Mission;
 import vious.untral.kaku.alarm.Model.MissionMath;
 import vious.untral.kaku.alarm.Model.MissionPicutre;
 import vious.untral.kaku.alarm.Model.MissionQR;
 import vious.untral.kaku.alarm.Model.MissionShake;
+import vious.untral.kaku.alarm.R;
 
 public class MissionAlarmActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Integer> mResId;

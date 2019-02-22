@@ -1,22 +1,28 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import vious.untral.kaku.alarm.AlarmFragment.OnListFragmentInteractionListener;
+import vious.untral.kaku.alarm.UI.MainActivity;
+import vious.untral.kaku.alarm.fragment.AlarmFragment.OnListFragmentInteractionListener;
 import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.UI.AlarmDetailActivity;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
+import static vious.untral.kaku.alarm.Tool.Unitls.weekdays;
+import static vious.untral.kaku.alarm.Tool.Unitls.weekkenddays;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link vious.untral.kaku.alarm.Model.Alarm} and makes a call to the
@@ -27,8 +33,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
 
     private final List<Alarm> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Context mContext;
-    private boolean[] weekdays = new boolean[]{true, true, true, true, true, false, false};
+    private Activity mContext;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,16 +42,15 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         return new ViewHolder(view);
     }
 
-    private boolean[] weekkenddays = new boolean[]{true, true, true, true, true, true, true};
 
-    public MyAlarmRecyclerViewAdapter(List<Alarm> items, OnListFragmentInteractionListener listener, Context context) {
+    public MyAlarmRecyclerViewAdapter(List<Alarm> items, OnListFragmentInteractionListener listener, Activity context) {
         mContext = context;
         mValues = items;
         mListener = listener;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getHour() + ":" + mValues.get(position).getMinute());
         holder.mContentView.setText(getRepeat(mValues.get(position).getRepeat()));
@@ -58,7 +62,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-                    openSelectedAlarm(holder.mItem);
+                    openSelectedAlarm(holder.mItem, position);
                 }
             }
         });
@@ -84,10 +88,18 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
 
     private String getRepeat(boolean[] repeat) {
         String re = "";
-        if (Arrays.equals(weekdays, repeat)) {
+        if (Arrays.equals(everyday, repeat)) {
+            re = mContext.getResources().getString(R.string.everyday);
+            return re;
+
+        } else if (Arrays.equals(weekdays, repeat)) {
             re = mContext.getResources().getString(R.string.weekdays);
+            return re;
+
         } else if (Arrays.equals(weekkenddays, repeat)) {
             re = mContext.getResources().getString(R.string.weekends);
+            return re;
+
         } else {
             for (int i = 0; i < 7; i++) {
                 if (repeat[i] == true) {
@@ -118,16 +130,16 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                 }
             }
         }
-        return re.substring(0, (re.length() - 1));
+        return re.substring(0, (re.length() - 2));
     }
 
-    private void openSelectedAlarm(Alarm mItem) {
+    private void openSelectedAlarm(Alarm mItem, int postion) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", mItem);
-
+        bundle.putInt("postion", postion);
         Intent intent = new Intent(mContext, AlarmDetailActivity.class);
         intent.putExtras(bundle);
-        mContext.startActivity(intent);
+        mContext.startActivityForResult(intent, MainActivity.UPDATE_ALARM);
     }
 
     @Override

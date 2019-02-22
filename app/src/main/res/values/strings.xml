@@ -9,8 +9,9 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="ok">OK</string>
-    <string name="weekdays">Weekdays</string>
-    <string name="weekends">Weekends</string>
+    <string name="weekdays">Weekday</string>
+    <string name="everyday">Everyday</string>
+    <string name="weekends">Weekend</string>
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
     <string name="wednesday">Wednesday</string>

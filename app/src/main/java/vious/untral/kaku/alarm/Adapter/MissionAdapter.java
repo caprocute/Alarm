@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import vious.untral.kaku.alarm.MyAlarmRecyclerViewAdapter;
+import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.R;
 
 class MissionAdapter extends RecyclerView.Adapter {

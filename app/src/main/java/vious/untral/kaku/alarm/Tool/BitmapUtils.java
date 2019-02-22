@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.Tool;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

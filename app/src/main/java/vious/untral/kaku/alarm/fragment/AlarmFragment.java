@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import vious.untral.kaku.alarm.Adapter.MyAlarmRecyclerViewAdapter;
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.dummy.DummyContent;
-
-import java.util.List;
+import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Model.DummyContent;
 
 /**
  * A fragment representing a list of Items.
@@ -56,6 +56,9 @@ public class AlarmFragment extends Fragment {
         }
     }
 
+    private RecyclerView recyclerView;
+    private MyAlarmRecyclerViewAdapter myAlarmRecyclerViewAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,13 +67,15 @@ public class AlarmFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener, getActivity()));
+
+            myAlarmRecyclerViewAdapter = new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener, getActivity());
+            recyclerView.setAdapter(myAlarmRecyclerViewAdapter);
             recyclerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -79,6 +84,19 @@ public class AlarmFragment extends Fragment {
             });
         }
         return view;
+    }
+
+
+    public boolean deleteAlarm(int postion) {
+        DummyContent.ITEMS.remove(postion);
+        myAlarmRecyclerViewAdapter.notifyDataSetChanged();
+        return true;
+    }
+
+    public boolean updateAlarm(int postion, Alarm alarm) {
+        DummyContent.ITEMS.set(postion, alarm);
+        myAlarmRecyclerViewAdapter.notifyDataSetChanged();
+        return true;
     }
 
 

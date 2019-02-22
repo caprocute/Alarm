@@ -1,8 +1,7 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,9 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
-import vious.untral.kaku.alarm.AlarmScreenActivity;
+import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.Model.Mission;
+import vious.untral.kaku.alarm.UI.AlarmScreenActivity;
 import vious.untral.kaku.alarm.BuildConfig;
 import vious.untral.kaku.alarm.R;
 

@@ -1,7 +1,9 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.UI;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,24 +13,34 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.R;
+
+import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
+import static vious.untral.kaku.alarm.Tool.Unitls.weekdays;
+import static vious.untral.kaku.alarm.Tool.Unitls.weekkenddays;
 
 public class AlarmDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,8 +63,9 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     private SeekBar seekVolume;
     private Switch switchVib;
     private ImageView imageView;
-    private boolean[] weekkenddays = new boolean[]{true, true, true, true, true, true, true};
-    private boolean[] weekdays = new boolean[]{true, true, true, true, true, false, false};
+
+
+    private ConstraintLayout containerRepeat;
     private final Handler uiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -65,6 +78,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         }
     };
     private TimePicker timePicker;
+    private int mPostion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +88,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mAlarm = bundle.getParcelable("alarm");
+        mPostion = bundle.getInt("postion");
         init();
         loadAlarmData(mAlarm);
     }
@@ -84,10 +99,16 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
     private String getRepeat(boolean[] repeat) {
         String re = "";
-        if (Arrays.equals(weekdays, repeat)) {
+        if (Arrays.equals(everyday, repeat)) {
+            re = getResources().getString(R.string.everyday);
+            return re;
+        } else if (Arrays.equals(weekdays, repeat)) {
             re = getResources().getString(R.string.weekdays);
+            return re;
         } else if (Arrays.equals(weekkenddays, repeat)) {
             re = getResources().getString(R.string.weekends);
+            return re;
+
         } else {
             for (int i = 0; i < 7; i++) {
                 if (repeat[i] == true) {
@@ -118,13 +139,16 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         }
-        return re.substring(0, (re.length() - 1));
+        return re.substring(0, (re.length() - 2));
     }
 
     private Timer t;
     public static int MISSION_ALARM_CODE = 1;
 
     private void init() {
+        containerRepeat = (ConstraintLayout) findViewById(R.id.containerRepeat);
+        containerRepeat.setOnClickListener(this);
+
         txtLabel = (TextView) findViewById(R.id.txtLabel);
         txtMissionAlarm = (TextView) findViewById(R.id.txtMissionAlarm);
         txtTimeRemain = (TextView) findViewById(R.id.txtTimeRemain);
@@ -142,8 +166,12 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         btnd1h.setOnClickListener(this);
 
         btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(this);
         btnDel = (Button) findViewById(R.id.btnDel);
+        btnDel.setOnClickListener(this);
         btnOk = (Button) findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(this);
+
         timePicker = (TimePicker) findViewById(R.id.timePicker1);
 
         seekVolume = (SeekBar) findViewById(R.id.seekVolume);
@@ -197,8 +225,11 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
         txtTimeRemain.setText(calTimeRemain(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()));
         txtRepeat.setText(getRepeat(mAlarm.getRepeat()));
-        if (mAlarm.getRingtone() != null) {
-            txtRingtone.setText(mAlarm.getRingtone());
+
+        File ringtone = new File(mAlarm.getRingtone());
+
+        if (ringtone != null) {
+            txtRingtone.setText(ringtone.getName());
         }
         txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
         txtLabel.setText(mAlarm.getLabel());
@@ -216,6 +247,11 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         bundle.putString("update", data);
         message.setData(bundle);
         uiHandler.sendMessage(message);
+    }
+
+    public void updateRepeat(boolean[] repeat) {
+        mAlarm.setRepeat(repeat);
+        loadAlarmData(mAlarm);
     }
 
     private String calTimeRemain(final int hour, final int minute, final boolean[] repeat) {
@@ -313,7 +349,68 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(AlarmDetailActivity.this, MissionAlarmActivity.class);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, MISSION_ALARM_CODE);
+                break;
 
+            case R.id.btnCancel:
+                setResult(Activity.RESULT_CANCELED, null);
+                finish();
+                break;
+
+            case R.id.btnOk:
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("alarm", mAlarm);
+                returnIntent.putExtra("isdel", false);
+                returnIntent.putExtra("postion", mPostion);
+                setResult(MainActivity.UPDATE_ALARM, returnIntent);
+                finish();
+
+                break;
+            case R.id.btnDel:
+                final TextView txttitle, txtcontent;
+                Button btnOk, btnCancel;
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.custom_alert_dialog, null);
+
+                txttitle = (TextView) dialogView.findViewById(R.id.txtTitle);
+                txtcontent = (TextView) dialogView.findViewById(R.id.txtContent);
+
+                txttitle.setText("Delete entry");
+                txtcontent.setText("Are you sure you want to delete this entry?");
+
+                btnOk = (Button) dialogView.findViewById(R.id.btnOkAlert);
+                btnCancel = (Button) dialogView.findViewById(R.id.btnCancelAlert);
+
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        Intent returnIntent = new Intent();
+                        returnIntent = new Intent();
+                        returnIntent.putExtra("isdel", true);
+                        returnIntent.putExtra("postion", mPostion);
+                        setResult(MainActivity.UPDATE_ALARM, returnIntent);
+                        finish();
+                    }
+                });
+
+                dialogBuilder.setView(dialogView);
+
+                final AlertDialog b = dialogBuilder.create();
+                b.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                b.show();
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        b.dismiss();
+                        // TODO Auto-generated method stub
+                    }
+                });
+                break;
+            case R.id.containerRepeat:
+                RepeatPickerDialog repeatPickerDialog = new RepeatPickerDialog(AlarmDetailActivity.this, mAlarm.getRepeat());
+                repeatPickerDialog.createNew();
                 break;
         }
     }

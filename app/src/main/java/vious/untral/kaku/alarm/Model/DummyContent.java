@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.dummy;
+package vious.untral.kaku.alarm.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

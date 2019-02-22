@@ -15,29 +15,10 @@ public class Alarm implements Parcelable {
     private int id;
     private int minute;
     private boolean[] repeat = new boolean[7];
-    public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
-        @Override
-        public Alarm createFromParcel(Parcel in) {
-            return new Alarm(in);
-        }
 
-        @Override
-        public Alarm[] newArray(int size) {
-            return new Alarm[size];
-        }
-    };
     private int snooze;
     private String label;
 
-    protected Alarm(Parcel in) {
-        missionAlarm = in.readInt();
-        hour = in.readInt();
-        id = in.readInt();
-        minute = in.readInt();
-        repeat = in.createBooleanArray();
-        snooze = in.readInt();
-        label = in.readString();
-    }
 
     private String ringtone;
 
@@ -54,6 +35,29 @@ public class Alarm implements Parcelable {
 
         snooze = 0;
         label = "";
+    }
+
+    public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
+        @Override
+        public Alarm createFromParcel(Parcel in) {
+            return new Alarm(in);
+        }
+
+        @Override
+        public Alarm[] newArray(int size) {
+            return new Alarm[size];
+        }
+    };
+
+    protected Alarm(Parcel in) {
+        missionAlarm = in.readInt();
+        hour = in.readInt();
+        id = in.readInt();
+        minute = in.readInt();
+        repeat = in.createBooleanArray();
+        snooze = in.readInt();
+        label = in.readString();
+        ringtone = in.readString();
     }
 
     public int getId() {
@@ -133,8 +137,8 @@ public class Alarm implements Parcelable {
         parcel.writeInt(id);
         parcel.writeInt(minute);
         parcel.writeBooleanArray(repeat);
-        parcel.writeString(ringtone);
         parcel.writeInt(snooze);
         parcel.writeString(label);
+        parcel.writeString(ringtone);
     }
 }

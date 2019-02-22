@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm;
+package vious.untral.kaku.alarm.Tool;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
