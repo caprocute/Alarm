@@ -15,12 +15,20 @@ public class Alarm implements Parcelable {
     private int id;
     private int minute;
     private boolean[] repeat = new boolean[7];
-
+    private boolean vibrate;
     private int snooze;
     private String label;
-
-
     private String ringtone;
+
+    public boolean isVibrate() {
+        return vibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        this.vibrate = vibrate;
+    }
+
+
 
     public Alarm() {
         missionAlarm = 3;
@@ -37,6 +45,19 @@ public class Alarm implements Parcelable {
         label = "";
     }
 
+
+    protected Alarm(Parcel in) {
+        missionAlarm = in.readInt();
+        hour = in.readInt();
+        id = in.readInt();
+        minute = in.readInt();
+        repeat = in.createBooleanArray();
+        vibrate = in.readByte() != 0;
+        snooze = in.readInt();
+        label = in.readString();
+        ringtone = in.readString();
+    }
+
     public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
         @Override
         public Alarm createFromParcel(Parcel in) {
@@ -48,17 +69,6 @@ public class Alarm implements Parcelable {
             return new Alarm[size];
         }
     };
-
-    protected Alarm(Parcel in) {
-        missionAlarm = in.readInt();
-        hour = in.readInt();
-        id = in.readInt();
-        minute = in.readInt();
-        repeat = in.createBooleanArray();
-        snooze = in.readInt();
-        label = in.readString();
-        ringtone = in.readString();
-    }
 
     public int getId() {
         return id;
@@ -112,6 +122,10 @@ public class Alarm implements Parcelable {
         return snooze;
     }
 
+    public boolean getVibrate() {
+        return vibrate;
+    }
+
     public void setSnooze(int snooze) {
         this.snooze = snooze;
     }
@@ -131,14 +145,15 @@ public class Alarm implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(missionAlarm);
-        parcel.writeInt(hour);
-        parcel.writeInt(id);
-        parcel.writeInt(minute);
-        parcel.writeBooleanArray(repeat);
-        parcel.writeInt(snooze);
-        parcel.writeString(label);
-        parcel.writeString(ringtone);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(missionAlarm);
+        dest.writeInt(hour);
+        dest.writeInt(id);
+        dest.writeInt(minute);
+        dest.writeBooleanArray(repeat);
+        dest.writeByte((byte) (vibrate ? 1 : 0));
+        dest.writeInt(snooze);
+        dest.writeString(label);
+        dest.writeString(ringtone);
     }
 }

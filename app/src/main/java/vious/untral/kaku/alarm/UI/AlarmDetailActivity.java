@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -194,6 +195,13 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
         missionLay = (ConstraintLayout) findViewById(R.id.missionLay);
         missionLay.setOnClickListener(this);
+
+        switchVib.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAlarm.setVibrate(isChecked);
+            }
+        });
     }
 
     private void loadAlarmData(Alarm mAlarm) {

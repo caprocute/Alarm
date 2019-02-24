@@ -73,7 +73,7 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         mediaPlayer.start();
-        makeVibrate();
+        if (mAlarm.getVibrate()) makeVibrate();
 
     }
 
