@@ -1,3 +1,4 @@
+/*
 package vious.untral.kaku.alarm.Tool;
 
 import android.content.ContentValues;
@@ -15,9 +16,11 @@ import java.util.List;
 import vious.untral.kaku.alarm.Model.Alarm;
 
 
+*/
 /**
  * Created by chien on 11/13/16.
- */
+ *//*
+
 
 public class DBManager extends SQLiteOpenHelper {
 
@@ -84,9 +87,11 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
     
-    /*
+    */
+/*
     Select a Alarm by ID
-     */
+     *//*
+
 
     public Alarm getSdtudentById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -102,9 +107,11 @@ public class DBManager extends SQLiteOpenHelper {
         return Alarm;
     }
     
-    /*
+    */
+/*
     Update name of Alarm 
-     */
+     *//*
+
 
     public int Update(Alarm Alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -117,9 +124,11 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
  
-    /*
+    */
+/*
      Getting All Alarm
-      */
+      *//*
+
 
     public List<Alarm> getAllAlarm() {
         List<Alarm> listAlarm = new ArrayList<Alarm>();
@@ -145,9 +154,11 @@ public class DBManager extends SQLiteOpenHelper {
         return listAlarm;
     }
 
-    /*
+    */
+/*
     Delete a Alarm by ID
-     */
+     *//*
+
     public void deleteAlarm(Alarm Alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, ID + " = ?",
@@ -155,9 +166,11 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    /*
+    */
+/*
     Get Count Alarm in Table Alarm
-     */
+     *//*
+
     public int getAlarmsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -167,4 +180,4 @@ public class DBManager extends SQLiteOpenHelper {
         // return count
         return cursor.getCount();
     }
-}
+}*/

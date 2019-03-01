@@ -20,32 +20,6 @@ public class Alarm implements Parcelable {
     private String label;
     private String ringtone;
 
-    public boolean isVibrate() {
-        return vibrate;
-    }
-
-    public void setVibrate(boolean vibrate) {
-        this.vibrate = vibrate;
-    }
-
-
-
-    public Alarm() {
-        missionAlarm = 3;
-        hour = 6;
-        minute = 30;
-
-        Arrays.fill(repeat, false);
-        for (int i = 0; i < 2; i++) {
-            repeat[i] = true;
-        }
-        ringtone = "/sdcard/Download/AmThamBenEm-SonTungMTP-4066476.mp3";
-
-        snooze = 0;
-        label = "";
-    }
-
-
     protected Alarm(Parcel in) {
         missionAlarm = in.readInt();
         hour = in.readInt();
@@ -69,6 +43,30 @@ public class Alarm implements Parcelable {
             return new Alarm[size];
         }
     };
+
+    public Alarm() {
+        missionAlarm = 3;
+        hour = 6;
+        minute = 30;
+
+        Arrays.fill(repeat, false);
+        for (int i = 0; i < 2; i++) {
+            repeat[i] = true;
+        }
+        ringtone = "/sdcard/Download/AmThamBenEm-SonTungMTP-4066476.mp3";
+        vibrate = false;
+        snooze = 0;
+        label = "";
+    }
+
+    public boolean isVibrate() {
+        return vibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        this.vibrate = vibrate;
+    }
+
 
     public int getId() {
         return id;
@@ -137,7 +135,6 @@ public class Alarm implements Parcelable {
     public void setLabel(String label) {
         this.label = label;
     }
-
 
     @Override
     public int describeContents() {

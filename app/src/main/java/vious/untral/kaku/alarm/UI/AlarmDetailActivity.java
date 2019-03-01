@@ -2,7 +2,9 @@ package vious.untral.kaku.alarm.UI;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -38,24 +40,15 @@ import java.util.TimerTask;
 
 import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.AlarmBroadcast;
+import vious.untral.kaku.alarm.Tool.ParcelableUtil;
+import vious.untral.kaku.alarm.Tool.Unitls;
 
 import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
 import static vious.untral.kaku.alarm.Tool.Unitls.weekdays;
 import static vious.untral.kaku.alarm.Tool.Unitls.weekkenddays;
 
 public class AlarmDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setStatusBarGradiant(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            Drawable background = activity.getResources().getDrawable(R.color.witching_hour1);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
-            window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
-            window.setBackgroundDrawable(background);
-        }
-    }
 
     private Alarm mAlarm;
     private TextView txtMissionAlarm, txtTimeRemain, txtRepeat, txtRingtone, txtSnooze, txtLabel;
@@ -66,7 +59,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     private ImageView imageView;
 
 
-    private ConstraintLayout containerRepeat;
+    private ConstraintLayout containerRepeat, container_ringtone, container_label, container_snooze;
     private final Handler uiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -85,7 +78,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_detail);
-        setStatusBarGradiant(this);
+        Unitls.setStatusBarGradiant(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mAlarm = bundle.getParcelable("alarm");
@@ -196,6 +189,15 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         missionLay = (ConstraintLayout) findViewById(R.id.missionLay);
         missionLay.setOnClickListener(this);
 
+        container_ringtone = (ConstraintLayout) findViewById(R.id.container_ringtone);
+        container_ringtone.setOnClickListener(this);
+
+        container_label = (ConstraintLayout) findViewById(R.id.container_label);
+        container_label.setOnClickListener(this);
+
+        container_snooze = (ConstraintLayout) findViewById(R.id.container_snooze);
+        container_snooze.setOnClickListener(this);
+
         switchVib.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -259,6 +261,11 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
     public void updateRepeat(boolean[] repeat) {
         mAlarm.setRepeat(repeat);
+        loadAlarmData(mAlarm);
+    }
+
+    public void updateLabel(String label) {
+        mAlarm.setLabel(label);
         loadAlarmData(mAlarm);
     }
 
@@ -369,6 +376,16 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 returnIntent.putExtra("alarm", mAlarm);
                 returnIntent.putExtra("isdel", false);
                 returnIntent.putExtra("postion", mPostion);
+
+                int hour = 1;
+                Intent i = new Intent(AlarmDetailActivity.this, AlarmBroadcast.class);
+                i.setAction("hieuhk");
+                i.putExtra("alarm", ParcelableUtil.marshall(mAlarm));
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + hour * 1000, pendingIntent);
+
+
                 setResult(MainActivity.UPDATE_ALARM, returnIntent);
                 finish();
 
@@ -419,6 +436,18 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
             case R.id.containerRepeat:
                 RepeatPickerDialog repeatPickerDialog = new RepeatPickerDialog(AlarmDetailActivity.this, mAlarm.getRepeat());
                 repeatPickerDialog.createNew();
+                break;
+            case R.id.container_ringtone:
+                intent = new Intent(AlarmDetailActivity.this, SelectRingtoneActivity.class);
+                startActivityForResult(intent, Unitls.PICKER_RINGTONE);
+                break;
+            case R.id.container_label:
+                LabelDialog labelDialog = new LabelDialog(AlarmDetailActivity.this, mAlarm.getLabel());
+                labelDialog.createNew();
+                break;
+            case R.id.container_snooze:
+                SnoozeDialog snoozeDialog = new SnoozeDialog(AlarmDetailActivity.this, mAlarm.getSnooze());
+                snoozeDialog.createNew();
                 break;
         }
     }

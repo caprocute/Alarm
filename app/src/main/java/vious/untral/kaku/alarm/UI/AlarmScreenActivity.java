@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -62,9 +64,18 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
         btnDissmiss.setOnClickListener(this);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(this, R.raw.default_alarm);
         try {
-            mediaPlayer.setDataSource(DEFAULT_RINGTONE_URL);
+            if (Build.VERSION.SDK_INT >= 21) {
+                mediaPlayer.setAudioAttributes(
+                        new AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_ALARM)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                .build());
+            } else {
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+            }
+            /*mediaPlayer.setDataSource(DEFAULT_RINGTONE_URL);*/
             mediaPlayer.prepare();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -72,7 +83,12 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
             System.out.println("Exception of type : " + e.toString());
             e.printStackTrace();
         }
-        mediaPlayer.start();
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
         if (mAlarm.getVibrate()) makeVibrate();
 
     }
