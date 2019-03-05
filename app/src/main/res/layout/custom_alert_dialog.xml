@@ -59,11 +59,7 @@
         <Button
             android:id="@+id/btnOkAlert"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
+            style="@style/TransparentButtonStyle"
             android:text="@string/ok"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,11 +74,7 @@
 
         <Button
             android:id="@+id/btnCancelAlert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
+            style="@style/TransparentButtonStyle"
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnOkAlert"

@@ -8,12 +8,7 @@
 
     <Button
         android:id="@+id/btnOkRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
+        style="@style/TransparentButtonStyle"
         android:text="@string/ok"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,12 +17,7 @@
 
     <Button
         android:id="@+id/btnCancelRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
+        style="@style/TransparentButtonStyle"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnOkRepeat"

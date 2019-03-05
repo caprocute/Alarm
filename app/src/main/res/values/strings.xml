@@ -45,6 +45,16 @@
     <string name="days">days</string>
     <string name="remain_part1">Alarm set for </string>
     <string name="remain_part2">from now</string>
+
+    <string name="radio_minutes_1">OFF</string>
+    <string name="radio_minutes_2">1 minutes</string>
+    <string name="radio_minutes_3">5 minutes</string>
+    <string name="radio_minutes_4">10 minutes</string>
+    <string name="radio_minutes_5">15 minutes</string>
+    <string name="radio_minutes_6">20 minutes</string>
+    <string name="radio_minutes_7">15 minutes</string>
+    <string name="radio_minutes_8">30 minutes</string>
+
     <!-- pref String -->
     <string name="pref_sound">Sound</string>
     <string name="pref_volume">Gradually increase volume</string>

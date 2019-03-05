@@ -8,9 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.UI.MainActivity;
 import vious.untral.kaku.alarm.fragment.AlarmFragment.OnListFragmentInteractionListener;
 import vious.untral.kaku.alarm.Model.Alarm;
@@ -63,6 +66,17 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                     openSelectedAlarm(holder.mItem, position);
+                }
+            }
+        });
+
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked == true) {
+                    Unitls.setAlarmFromNow(mContext, mValues.get(position));
+                } else {
+                    Unitls.cancelAlarm(mContext, mValues.get(position));
                 }
             }
         });
@@ -153,6 +167,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         public final TextView mContentView;
         public final ImageView imageView;
         public Alarm mItem;
+        public final CheckBox checkBox;
 
         public ViewHolder(View view) {
             super(view);
@@ -160,6 +175,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
             mIdView = (TextView) view.findViewById(R.id.item_number);
             imageView = (ImageView) view.findViewById(R.id.imageView);
             mContentView = (TextView) view.findViewById(R.id.content);
+            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         }
 
         @Override

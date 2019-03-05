@@ -3,10 +3,8 @@ package vious.untral.kaku.alarm.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.Calendar;
+import java.util.Random;
 
 public class Alarm implements Parcelable {
 
@@ -20,31 +18,35 @@ public class Alarm implements Parcelable {
     private String label;
     private String ringtone;
 
-    protected Alarm(Parcel in) {
-        missionAlarm = in.readInt();
-        hour = in.readInt();
-        id = in.readInt();
-        minute = in.readInt();
-        repeat = in.createBooleanArray();
-        vibrate = in.readByte() != 0;
-        snooze = in.readInt();
-        label = in.readString();
-        ringtone = in.readString();
+    private boolean isEnable;
+
+
+    public Alarm(int id,
+                 int missionAlarm,
+                 int hour,
+                 int minute,
+                 boolean[] repeat,
+                 boolean vibrate,
+                 int snooze,
+                 String label,
+                 boolean isEnable,
+                 String ringtone) {
+        this.id = id;
+        this.missionAlarm = missionAlarm;
+        this.hour = hour;
+        this.minute = minute;
+        this.vibrate = vibrate;
+        this.snooze = snooze;
+        this.label = label;
+        this.isEnable = isEnable;
+        this.ringtone = ringtone;
+        this.repeat = repeat;
     }
 
-    public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
-        @Override
-        public Alarm createFromParcel(Parcel in) {
-            return new Alarm(in);
-        }
-
-        @Override
-        public Alarm[] newArray(int size) {
-            return new Alarm[size];
-        }
-    };
-
     public Alarm() {
+        isEnable = true;
+        Random random = new Random();
+        id = random.nextInt();
         missionAlarm = 3;
         hour = 6;
         minute = 30;
@@ -58,6 +60,39 @@ public class Alarm implements Parcelable {
         snooze = 0;
         label = "";
     }
+
+    protected Alarm(Parcel in) {
+        missionAlarm = in.readInt();
+        hour = in.readInt();
+        id = in.readInt();
+        minute = in.readInt();
+        repeat = in.createBooleanArray();
+        vibrate = in.readByte() != 0;
+        snooze = in.readInt();
+        label = in.readString();
+        ringtone = in.readString();
+        isEnable = in.readByte() != 0;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
+
+    public static final Creator<Alarm> CREATOR = new Creator<Alarm>() {
+        @Override
+        public Alarm createFromParcel(Parcel in) {
+            return new Alarm(in);
+        }
+
+        @Override
+        public Alarm[] newArray(int size) {
+            return new Alarm[size];
+        }
+    };
 
     public boolean isVibrate() {
         return vibrate;
@@ -136,6 +171,7 @@ public class Alarm implements Parcelable {
         this.label = label;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -152,5 +188,6 @@ public class Alarm implements Parcelable {
         dest.writeInt(snooze);
         dest.writeString(label);
         dest.writeString(ringtone);
+        dest.writeByte((byte) (isEnable ? 1 : 0));
     }
 }

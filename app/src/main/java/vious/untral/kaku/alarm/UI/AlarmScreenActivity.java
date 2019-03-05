@@ -48,6 +48,7 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createWaveform(vibratePattern, 0));
         } else {
+
             v.vibrate(vibratePattern, 0);
         }
     }
@@ -86,7 +87,7 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                mp.start();
+                /*mp.start();*/
             }
         });
         if (mAlarm.getVibrate()) makeVibrate();

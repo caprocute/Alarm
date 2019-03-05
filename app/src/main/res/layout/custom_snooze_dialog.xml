@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_jshine">
+
+    <Button
+        android:id="@+id/btnCancelSnooze"
+        style="@style/TransparentButtonStyle"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnOkSnooze"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <Button
+        android:id="@+id/btnOkSnooze"
+        style="@style/TransparentButtonStyle"
+        android:layout_marginEnd="16dp"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            style="@style/RadioButtonStyle"
+            android:text="@string/radio_minutes_1" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_2" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_3" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_4" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_5" />
+
+        <RadioButton
+            android:id="@+id/radioButton6"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_6" />
+
+        <RadioButton
+            android:id="@+id/radioButton7"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_7" />
+
+        <RadioButton
+            android:id="@+id/radioButton8"
+            style="@style/RadioButtonStyle"
+
+            android:text="@string/radio_minutes_8" />
+    </RadioGroup>
+
+    <TextView
+
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/snooze"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

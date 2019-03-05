@@ -45,6 +45,7 @@ import vious.untral.kaku.alarm.Tool.ParcelableUtil;
 import vious.untral.kaku.alarm.Tool.Unitls;
 
 import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
+import static vious.untral.kaku.alarm.Tool.Unitls.setAlarmFromNow;
 import static vious.untral.kaku.alarm.Tool.Unitls.weekdays;
 import static vious.untral.kaku.alarm.Tool.Unitls.weekkenddays;
 
@@ -241,7 +242,34 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         if (ringtone != null) {
             txtRingtone.setText(ringtone.getName());
         }
-        txtSnooze.setText(String.valueOf(mAlarm.getSnooze()));
+
+        switch (mAlarm.getSnooze()) {
+            case 0:
+                txtSnooze.setText(getString(R.string.radio_minutes_1));
+                break;
+            case 1:
+                txtSnooze.setText(getString(R.string.radio_minutes_2));
+                break;
+            case 2:
+                txtSnooze.setText(getString(R.string.radio_minutes_3));
+                break;
+            case 3:
+                txtSnooze.setText(getString(R.string.radio_minutes_4));
+                break;
+            case 4:
+                txtSnooze.setText(getString(R.string.radio_minutes_5));
+                break;
+            case 5:
+                txtSnooze.setText(getString(R.string.radio_minutes_6));
+                break;
+            case 6:
+                txtSnooze.setText(getString(R.string.radio_minutes_7));
+                break;
+            case 7:
+                txtSnooze.setText(getString(R.string.radio_minutes_8));
+                break;
+        }
+
         txtLabel.setText(mAlarm.getLabel());
 
         updateAlarmFlag = false;
@@ -269,13 +297,20 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         loadAlarmData(mAlarm);
     }
 
+    public void updateSnooze(int snooze) {
+        mAlarm.setSnooze(snooze);
+        loadAlarmData(mAlarm);
+    }
+
     private String calTimeRemain(final int hour, final int minute, final boolean[] repeat) {
         if (t != null) t.cancel();
         t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
                                   @Override
                                   public void run() {
-                                      DateTime now = DateTime.now();
+
+                                      updateUI(Unitls.calTimeRemain(AlarmDetailActivity.this, hour, minute, repeat));
+                                      /*DateTime now = DateTime.now();
 
                                       DateTime alarmDate = new DateTime(now.year().get(), now.monthOfYear().get(), now.dayOfMonth().get(), hour, minute);
 
@@ -332,7 +367,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                                               }
                                           }
                                           if (flagStop) alarmDate = alarmDate.plusWeeks(1);
-                                      }
+                                      }*/
 
                                   }
                               },
@@ -377,14 +412,15 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 returnIntent.putExtra("isdel", false);
                 returnIntent.putExtra("postion", mPostion);
 
-                int hour = 1;
+               /* int hour = 5;
                 Intent i = new Intent(AlarmDetailActivity.this, AlarmBroadcast.class);
                 i.setAction("hieuhk");
                 i.putExtra("alarm", ParcelableUtil.marshall(mAlarm));
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + hour * 1000, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + hour * 1000, pendingIntent);*/
 
+                setAlarmFromNow(AlarmDetailActivity.this, mAlarm);
 
                 setResult(MainActivity.UPDATE_ALARM, returnIntent);
                 finish();
@@ -463,4 +499,6 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
         }
     }
+
+
 }

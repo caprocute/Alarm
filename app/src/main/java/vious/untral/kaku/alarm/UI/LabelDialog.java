@@ -65,7 +65,7 @@ public class LabelDialog extends AlertDialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btnOkLabel:
                 if (mContext != null) {
-                    mContext.updateLabel(label);
+                    mContext.updateLabel(edtLabel.getText().toString());
                 }
 
                 b.dismiss();

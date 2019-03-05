@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.fragment.AlarmFragment;
 import vious.untral.kaku.alarm.fragment.HistoryFragment;
 import vious.untral.kaku.alarm.Model.Alarm;
@@ -135,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
                             alarmFragment.updateAlarm(mPostion, mAlarm);
                         }
                     }
+                    Toast.makeText(MainActivity.this,
+                            Unitls.calTimeRemain(MainActivity.this, mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }
