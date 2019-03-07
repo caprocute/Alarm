@@ -1,7 +1,6 @@
 package vious.untral.kaku.alarm.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -13,15 +12,15 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import vious.untral.kaku.alarm.Tool.Unitls;
-import vious.untral.kaku.alarm.UI.MainActivity;
-import vious.untral.kaku.alarm.fragment.AlarmFragment.OnListFragmentInteractionListener;
-import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.R;
-import vious.untral.kaku.alarm.UI.AlarmDetailActivity;
-
 import java.util.Arrays;
 import java.util.List;
+
+import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.Unitls;
+import vious.untral.kaku.alarm.UI.AlarmDetailActivity;
+import vious.untral.kaku.alarm.UI.MainActivity;
+import vious.untral.kaku.alarm.fragment.AlarmFragment.OnListFragmentInteractionListener;
 
 import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
 import static vious.untral.kaku.alarm.Tool.Unitls.weekdays;
@@ -151,6 +150,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", mItem);
         bundle.putInt("postion", postion);
+        bundle.putBoolean("isNew", false);
         Intent intent = new Intent(mContext, AlarmDetailActivity.class);
         intent.putExtras(bundle);
         mContext.startActivityForResult(intent, MainActivity.UPDATE_ALARM);

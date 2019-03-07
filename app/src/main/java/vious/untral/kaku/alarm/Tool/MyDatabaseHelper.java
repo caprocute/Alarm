@@ -49,7 +49,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.i(TAG, "MyDatabaseHelper.onCreate ... ");
         // Script tạo bảng.
-        String script = "CREATE TABLE " + TABLE_ALARM + "("
+        String script = "CREATE TABLE IF NOT EXISTS " + TABLE_ALARM + "("
                 + COLUMN_ALARM_ID + " INTEGER PRIMARY KEY,"
                 + COLUMN_ALARM_MISSION + " INTEGER,"
                 + COLUMN_ALARM_HOUR + " INTEGER,"
@@ -102,7 +102,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ALARM_MISSION, Alarm.getMissionAlarm());
         values.put(COLUMN_ALARM_HOUR, Alarm.getHour());
         values.put(COLUMN_ALARM_MINUTE, Alarm.getMinute());
-        values.put(COLUMN_ALARM_REPEAT_ID, Alarm.getRepeat().length);
+        values.put(COLUMN_ALARM_REPEAT_ID, createRepeatString(Alarm.getRepeat()));
         values.put(COLUMN_ALARM_VIBRATE, Alarm.getVibrate());
         values.put(COLUMN_ALARM_SNOOZE, Alarm.getSnooze());
         values.put(COLUMN_ALARM_LABEL, Alarm.getLabel());
@@ -116,6 +116,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         // Đóng kết nối database.
         db.close();
+    }
+
+    private String createRepeatString(boolean[] repeat) {
+        String s = "";
+        for (int i = 0; i < repeat.length; i++) {
+            if (repeat[i] == true) s += "1";
+            else s += 0;
+        }
+        return s;
     }
 
 
@@ -177,8 +186,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 Alarm.setVibrate(Boolean.parseBoolean(cursor.getString(5)));
                 Alarm.setSnooze(Integer.parseInt(cursor.getString(6)));
                 Alarm.setLabel(cursor.getString(7));
-                Alarm.setEnable(Boolean.parseBoolean(cursor.getString(8)));
-                Alarm.setRingtone(cursor.getString(9));
+                Alarm.setRingtone(cursor.getString(8));
+                Alarm.setEnable(Boolean.parseBoolean(cursor.getString(9)));
 
                 // Thêm vào danh sách.
                 AlarmList.add(Alarm);
@@ -190,7 +199,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean[] convertTorepeat(String string) {
-        return new boolean[]{};
+        boolean[] repeat = new boolean[string.length()];
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            if (c == '1') {
+                repeat[i] = true;
+            } else repeat[i] = false;
+        }
+        return repeat;
     }
 
     public int getAlarmsCount() {
@@ -219,7 +235,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ALARM_MISSION, Alarm.getMissionAlarm());
         values.put(COLUMN_ALARM_HOUR, Alarm.getHour());
         values.put(COLUMN_ALARM_MINUTE, Alarm.getMinute());
-        values.put(COLUMN_ALARM_REPEAT_ID, Alarm.getRepeat().length);
+        values.put(COLUMN_ALARM_REPEAT_ID, createRepeatString(Alarm.getRepeat()));
         values.put(COLUMN_ALARM_VIBRATE, Alarm.getVibrate());
         values.put(COLUMN_ALARM_SNOOZE, Alarm.getSnooze());
         values.put(COLUMN_ALARM_LABEL, Alarm.getLabel());

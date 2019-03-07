@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.List;
+
 import vious.untral.kaku.alarm.Adapter.MyAlarmRecyclerViewAdapter;
 import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.R;
-import vious.untral.kaku.alarm.Model.DummyContent;
+import vious.untral.kaku.alarm.Tool.MyDatabaseHelper;
 
 /**
  * A fragment representing a list of Items.
@@ -58,6 +60,8 @@ public class AlarmFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MyAlarmRecyclerViewAdapter myAlarmRecyclerViewAdapter;
+    private Context mContext;
+    private List<Alarm> adapterData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,15 +70,19 @@ public class AlarmFragment extends Fragment {
 
         // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+            mContext = view.getContext();
             recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                recyclerView.setLayoutManager(new GridLayoutManager(mContext, mColumnCount));
             }
 
-            myAlarmRecyclerViewAdapter = new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener, getActivity());
+            MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
+            myDatabaseHelper.createDefaultAlarmsIfNeed();
+            adapterData = myDatabaseHelper.getAllAlarms();
+
+            myAlarmRecyclerViewAdapter = new MyAlarmRecyclerViewAdapter(adapterData, mListener, getActivity());
             recyclerView.setAdapter(myAlarmRecyclerViewAdapter);
             recyclerView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,13 +96,21 @@ public class AlarmFragment extends Fragment {
 
 
     public boolean deleteAlarm(int postion) {
-        DummyContent.ITEMS.remove(postion);
+        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
+
+        Alarm alarm = adapterData.get(postion);
+        myDatabaseHelper.deleteAlarm(alarm);
+        adapterData.remove(postion);
         myAlarmRecyclerViewAdapter.notifyDataSetChanged();
+
         return true;
     }
 
     public boolean updateAlarm(int postion, Alarm alarm) {
-        DummyContent.ITEMS.set(postion, alarm);
+        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
+        myDatabaseHelper.updateAlarm(alarm);
+
+        adapterData.set(postion, alarm);
         myAlarmRecyclerViewAdapter.notifyDataSetChanged();
         return true;
     }
@@ -115,6 +131,14 @@ public class AlarmFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void addAlarm(Alarm mAlarm) {
+        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
+        myDatabaseHelper.addAlarm(mAlarm);
+
+        adapterData.add(mAlarm);
+        myAlarmRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     /**

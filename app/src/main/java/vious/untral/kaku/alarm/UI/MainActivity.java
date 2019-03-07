@@ -13,43 +13,27 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.R;
 import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.fragment.AlarmFragment;
 import vious.untral.kaku.alarm.fragment.HistoryFragment;
-import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.R;
 
 public class MainActivity extends AppCompatActivity implements HistoryFragment.OnFragmentInteractionListener, AlarmFragment.OnListFragmentInteractionListener {
 
     private TextView mTextMessage;
     public static int UPDATE_ALARM = 1;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    loadFragment(new AlarmFragment());
-                    return true;
-                case R.id.navigation_dashboard:
-                    loadFragment(new HistoryFragment());
-                    return true;
-                case R.id.navigation_notifications:
-                    loadFragment(new SettingsFragment());
-                    return true;
-            }
-            return false;
-        }
-    };
+    public static int ADD_ALARM = 2;
+    private FloatingActionButton floatAdd;
 
     private void loadFragment(Fragment fragment) {
         // load fragment
@@ -77,6 +61,29 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
         }
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    loadFragment(new AlarmFragment());
+                    floatAdd.setVisibility(View.VISIBLE);
+                    return true;
+                case R.id.navigation_dashboard:
+                    floatAdd.setVisibility(View.GONE);
+                    loadFragment(new HistoryFragment());
+                    return true;
+                case R.id.navigation_notifications:
+                    floatAdd.setVisibility(View.GONE);
+                    loadFragment(new SettingsFragment());
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +93,21 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        floatAdd = (FloatingActionButton) findViewById(R.id.floatAdd);
+
+        floatAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Alarm alarm = new Alarm();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", alarm);
+                bundle.putBoolean("isNew", true);
+                bundle.putInt("postion", -1);
+                Intent intent = new Intent(MainActivity.this, AlarmDetailActivity.class);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, MainActivity.ADD_ALARM);
+            }
+        });
 
         loadFragment(new AlarmFragment());
 
@@ -114,34 +136,47 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
-            if (resultCode == UPDATE_ALARM) {
-                Boolean isdel = data.getBooleanExtra("isdel", false);
-                if (isdel) {
-                    int mPostion = data.getIntExtra("postion", -1);
+        if (resultCode == UPDATE_ALARM) {
+            Boolean isdel = data.getBooleanExtra("isdel", false);
+            if (isdel) {
+                int mPostion = data.getIntExtra("postion", -1);
+                FragmentManager mFragmentManager = getFragmentManager();
+
+                if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
+                    AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
+                    alarmFragment.deleteAlarm(mPostion);
+                }
+            } else {
+                Alarm mAlarm = data.getParcelableExtra("alarm");
+                int mPostion = data.getIntExtra("postion", -1);
+
+                if (mAlarm != null && mPostion != -1) {
                     FragmentManager mFragmentManager = getFragmentManager();
 
                     if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
                         AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
-                        alarmFragment.deleteAlarm(mPostion);
+                        alarmFragment.updateAlarm(mPostion, mAlarm);
                     }
-                } else {
-                    Alarm mAlarm = data.getParcelableExtra("alarm");
-                    int mPostion = data.getIntExtra("postion", -1);
-
-                    if (mAlarm != null && mPostion != -1) {
-                        FragmentManager mFragmentManager = getFragmentManager();
-
-                        if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
-                            AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
-                            alarmFragment.updateAlarm(mPostion, mAlarm);
-                        }
-                    }
-                    Toast.makeText(MainActivity.this,
-                            Unitls.calTimeRemain(MainActivity.this, mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()),
-                            Toast.LENGTH_LONG).show();
                 }
+                Toast.makeText(MainActivity.this,
+                        Unitls.calTimeRemain(MainActivity.this, mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()),
+                        Toast.LENGTH_LONG).show();
             }
+        } else if (resultCode == ADD_ALARM) {
+            Alarm mAlarm = data.getParcelableExtra("alarm");
+            if (mAlarm != null) {
+                FragmentManager mFragmentManager = getFragmentManager();
+
+                if (mFragmentManager.findFragmentById(R.id.fragment_container) instanceof AlarmFragment) {
+                    AlarmFragment alarmFragment = (AlarmFragment) mFragmentManager.findFragmentById(R.id.fragment_container);
+                    alarmFragment.addAlarm(mAlarm);
+                }
+                Toast.makeText(MainActivity.this,
+                        Unitls.calTimeRemain(MainActivity.this, mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getRepeat()),
+                        Toast.LENGTH_LONG).show();
+            }
+
         }
     }
+
 }

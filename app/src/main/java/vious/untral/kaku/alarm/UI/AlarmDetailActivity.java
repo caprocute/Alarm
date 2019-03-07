@@ -1,37 +1,23 @@
 package vious.untral.kaku.alarm.UI;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 import java.io.File;
 import java.util.Arrays;
@@ -40,8 +26,6 @@ import java.util.TimerTask;
 
 import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.R;
-import vious.untral.kaku.alarm.Tool.AlarmBroadcast;
-import vious.untral.kaku.alarm.Tool.ParcelableUtil;
 import vious.untral.kaku.alarm.Tool.Unitls;
 
 import static vious.untral.kaku.alarm.Tool.Unitls.everyday;
@@ -74,6 +58,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     };
     private TimePicker timePicker;
     private int mPostion;
+    private boolean isNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +69,7 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
         Bundle bundle = intent.getExtras();
         mAlarm = bundle.getParcelable("alarm");
         mPostion = bundle.getInt("postion");
+        isNew = bundle.getBoolean("isNew");
         init();
         loadAlarmData(mAlarm);
     }
@@ -422,7 +408,9 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
 
                 setAlarmFromNow(AlarmDetailActivity.this, mAlarm);
 
-                setResult(MainActivity.UPDATE_ALARM, returnIntent);
+                if (isNew == false) setResult(MainActivity.UPDATE_ALARM, returnIntent);
+                else
+                    setResult(MainActivity.ADD_ALARM, returnIntent);
                 finish();
 
                 break;
