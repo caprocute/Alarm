@@ -2,25 +2,29 @@ package vious.untral.kaku.alarm.UI;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import java.io.IOException;
-
 import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.Model.Mission;
+import vious.untral.kaku.alarm.Model.MissionMath;
+import vious.untral.kaku.alarm.Model.MissionPicutre;
+import vious.untral.kaku.alarm.Model.MissionQR;
+import vious.untral.kaku.alarm.Model.MissionShake;
 import vious.untral.kaku.alarm.R;
 
 public class AlarmScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,9 +32,9 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
     private Boolean isDemo;
     private MediaPlayer mediaPlayer;
     private String DEFAULT_RINGTONE_URL = "/sdcard/Download/AmThamBenEm-SonTungMTP-4066476.mp3";
-    private Button btnDissmiss;
     private Vibrator v;
     private long vibratePattern[] = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+    private ConstraintLayout moduleVerifyAlarmScreen;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void setStatusBarGradiant(Activity activity) {
@@ -53,6 +57,8 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private Mission mMission;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +67,31 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
 
         mAlarm = getIntent().getParcelableExtra("alarm");
         isDemo = getIntent().getBooleanExtra("isdemo", false);
-        btnDissmiss = (Button) findViewById(R.id.txtDissmiss);
-        btnDissmiss.setOnClickListener(this);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        moduleVerifyAlarmScreen = (ConstraintLayout) findViewById(R.id.container_module_verify_alarm);
+
+        switch (mAlarm.getMissionAlarm()) {
+            case 0:
+                mMission = new Mission();
+                break;
+            case 1:
+                mMission = new MissionPicutre();
+                break;
+            case 2:
+                mMission = new MissionShake();
+                break;
+            case 3:
+                mMission = new MissionMath();
+                break;
+            case 4:
+                mMission = new MissionQR();
+                break;
+        }
+
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(moduleVerifyAlarmScreen.getId(), mMission).commit();
+        }
 
         mediaPlayer = MediaPlayer.create(this, R.raw.default_alarm);
         try {
@@ -113,9 +141,6 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.txtDissmiss:
-                onBackPressed();
-                break;
         }
     }
 }

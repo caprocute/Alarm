@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
             } else {
                 Alarm mAlarm = data.getParcelableExtra("alarm");
                 int mPostion = data.getIntExtra("postion", -1);
+                mAlarm.setEnable(true);
 
                 if (mAlarm != null && mPostion != -1) {
                     FragmentManager mFragmentManager = getFragmentManager();
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements HistoryFragment.O
             }
         } else if (resultCode == ADD_ALARM) {
             Alarm mAlarm = data.getParcelableExtra("alarm");
+            mAlarm.setEnable(true);
             if (mAlarm != null) {
                 FragmentManager mFragmentManager = getFragmentManager();
 

@@ -9,4 +9,6 @@
     <color name="jshine3">#f64f59</color>
     <color name="witching_hour1">#c31432</color>
     <color name="witching_hour2">#240b36</color>
+    <color name="white">#ffffff</color>
+    <color name="unselect">#212121</color>
 </resources>

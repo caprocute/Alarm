@@ -296,64 +296,6 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                                   public void run() {
 
                                       updateUI(Unitls.calTimeRemain(AlarmDetailActivity.this, hour, minute, repeat));
-                                      /*DateTime now = DateTime.now();
-
-                                      DateTime alarmDate = new DateTime(now.year().get(), now.monthOfYear().get(), now.dayOfMonth().get(), hour, minute);
-
-                                      boolean flagStop = true;
-
-                                      while (flagStop) {
-                                          for (int i = 0; i < repeat.length; i++) {
-                                              if (repeat[i] == true) {
-                                                  DateTime nextDay = null;
-                                                  switch (i) {
-                                                      case 0:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.MONDAY);
-                                                          break;
-                                                      case 1:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.TUESDAY);
-                                                          break;
-                                                      case 2:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.WEDNESDAY);
-                                                          break;
-                                                      case 3:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.THURSDAY);
-                                                          break;
-                                                      case 4:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.FRIDAY);
-                                                          break;
-                                                      case 5:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.SATURDAY);
-                                                          break;
-                                                      case 6:
-                                                          nextDay = alarmDate.withDayOfWeek(DateTimeConstants.SUNDAY);
-                                                          break;
-                                                  }
-
-                                                  if (nextDay.getMillis() > now.getMillis()) {
-                                                      long durationBetweenDate = nextDay.getMillis() - now.getMillis();
-                                                      long secondsCAL = durationBetweenDate / 1000;
-                                                      long minutesCAL = secondsCAL / 60;
-                                                      long hoursCAL = minutesCAL / 60;
-                                                      long daysCAL = hoursCAL / 24;
-
-                                                      String update = getString(R.string.remain_part1);
-
-                                                      if (daysCAL != 0)
-                                                          update += " " + daysCAL + " " + getString(R.string.days);
-                                                      if ((hoursCAL - daysCAL * 24) != 0)
-                                                          update += " " + (hoursCAL - daysCAL * 24) + " " + getString(R.string.hours);
-                                                      if ((minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) != 0)
-                                                          update += " " + (minutesCAL - (hoursCAL - daysCAL * 24) * 60 - daysCAL * 60 * 24) + " " + getString(R.string.minutes);
-
-                                                      updateUI(update);
-                                                      flagStop = false;
-                                                      break;
-                                                  }
-                                              }
-                                          }
-                                          if (flagStop) alarmDate = alarmDate.plusWeeks(1);
-                                      }*/
 
                                   }
                               },
@@ -406,7 +348,9 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + hour * 1000, pendingIntent);*/
 
+/*
                 setAlarmFromNow(AlarmDetailActivity.this, mAlarm);
+*/
 
                 if (isNew == false) setResult(MainActivity.UPDATE_ALARM, returnIntent);
                 else

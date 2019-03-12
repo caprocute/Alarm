@@ -3,13 +3,15 @@ package vious.untral.kaku.alarm.Adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -54,8 +56,11 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
+
         holder.mIdView.setText(mValues.get(position).getHour() + ":" + mValues.get(position).getMinute());
         holder.mContentView.setText(getRepeat(mValues.get(position).getRepeat()));
+        if (mValues.get(position).getLabel() != "")
+            holder.mLabel.setText("| " + mValues.get(position).getLabel());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,17 +73,68 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                 }
             }
         });
-
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     Unitls.setAlarmFromNow(mContext, mValues.get(position));
+
+                    holder.imageButton.setBackground(mContext.getDrawable(R.drawable.more));
+
+                    holder.mLabel.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.mContentView.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.mIdView.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.mLabel.setTextColor(mContext.getResources().getColor(R.color.white));
+
+                    switch (mValues.get(position).getMissionAlarm()) {
+                        case 0:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm));
+                            break;
+                        case 1:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera));
+                            break;
+                        case 2:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration));
+                            break;
+                        case 3:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator));
+                            break;
+                        case 4:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode));
+                            break;
+                    }
+
                 } else {
                     Unitls.cancelAlarm(mContext, mValues.get(position));
+                    Unitls.setAlarmFromNow(mContext, mValues.get(position));
+
+                    holder.mLabel.setTextColor(mContext.getResources().getColor(R.color.unselect));
+                    holder.mContentView.setTextColor(mContext.getResources().getColor(R.color.unselect));
+                    holder.mIdView.setTextColor(mContext.getResources().getColor(R.color.unselect));
+                    holder.mLabel.setTextColor(mContext.getResources().getColor(R.color.unselect));
+                    holder.imageButton.setBackground(mContext.getDrawable(R.drawable.more_off));
+
+                    switch (mValues.get(position).getMissionAlarm()) {
+                        case 0:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm_off));
+                            break;
+                        case 1:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera_of));
+                            break;
+                        case 2:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration_off));
+                            break;
+                        case 3:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator_off));
+                            break;
+                        case 4:
+                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode_off));
+                            break;
+                    }
                 }
             }
         });
+        holder.checkBox.setChecked(mValues.get(position).isEnable());
 
         switch (mValues.get(position).getMissionAlarm()) {
             case 0:
@@ -165,17 +221,24 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final TextView mLabel;
         public final ImageView imageView;
         public Alarm mItem;
-        public final CheckBox checkBox;
+        public final Switch checkBox;
+        public final ConstraintLayout container_item;
+        public final ImageButton imageButton;
+
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
+            mLabel = (TextView) view.findViewById(R.id.txtLabelitem);
             imageView = (ImageView) view.findViewById(R.id.imageView);
             mContentView = (TextView) view.findViewById(R.id.content);
-            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+            checkBox = (Switch) view.findViewById(R.id.checkBox);
+            container_item = (ConstraintLayout) view.findViewById(R.id.container_item);
+            imageButton = (ImageButton) view.findViewById(R.id.imageButton);
         }
 
         @Override

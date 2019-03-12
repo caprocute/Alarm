@@ -65,13 +65,13 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
 
         mPagerRecycleView = (FlingRecycleView) findViewById(R.id.rc_1);
 
-        Mission mission = new MissionQR(this);
+        Mission mission = new MissionQR();
 
-        missionList.add(new Mission(MissionAlarmActivity.this));
-        missionList.add(new MissionPicutre(MissionAlarmActivity.this));
-        missionList.add(new MissionShake(MissionAlarmActivity.this));
-        missionList.add(new MissionMath(MissionAlarmActivity.this));
-        missionList.add(new MissionQR(MissionAlarmActivity.this));
+        missionList.add(new Mission());
+        missionList.add(new MissionPicutre());
+        missionList.add(new MissionShake());
+        missionList.add(new MissionMath());
+        missionList.add(new MissionQR());
 
         mPagerRecycleView.setFlingAble(false);
         mPagerRecycleView.addItemDecoration(new LinePagerIndicatorDecoration());
