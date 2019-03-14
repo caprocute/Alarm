@@ -186,12 +186,16 @@ public class MissionMath extends Mission implements OnClickListener, View.OnLong
             case R.id.btn_cal_ok:
                 String res = edtInput.getText().toString();
                 if (res != null && res != "") {
-                    if (Integer.valueOf(res) == result) {
-                        mNumberMath = mNumberMath - 1;
-                        if (mNumberMath == 0) {
-                            getActivity().onBackPressed();
-                        } else createMath(mLevel);
-                    } else imgWrong.setVisibility(View.VISIBLE);
+                    try {
+                        if (Integer.valueOf(res) == result) {
+                            mNumberMath = mNumberMath - 1;
+                            if (mNumberMath == 0) {
+                                getActivity().onBackPressed();
+                            } else createMath(mLevel);
+                        } else imgWrong.setVisibility(View.VISIBLE);
+                    } catch (NumberFormatException e) {
+                        imgWrong.setVisibility(View.VISIBLE);
+                    }
                 }
                 break;
             case R.id.btn_cal_snooze:
