@@ -1,8 +1,11 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,14 +15,31 @@ import android.widget.Button;
 
 import vious.untral.kaku.alarm.R;
 
-public class Mission extends Fragment implements View.OnClickListener {
+public class MissionFragment extends Fragment implements View.OnClickListener, Parcelable {
     protected int missionID;
     protected Context mContext;
     protected ConstraintLayout parentView;
     protected Button btnDissmiss;
 
-    public Mission() {
+    public static final Creator<MissionFragment> CREATOR = new Creator<MissionFragment>() {
+        @Override
+        public MissionFragment createFromParcel(Parcel in) {
+            return new MissionFragment(in);
+        }
+
+        @Override
+        public MissionFragment[] newArray(int size) {
+            return new MissionFragment[size];
+        }
+    };
+
+    public MissionFragment() {
         missionID = 0;
+    }
+
+    @SuppressLint("ValidFragment")
+    protected MissionFragment(Parcel in) {
+        missionID = in.readInt();
     }
 
     @Override
@@ -54,6 +74,16 @@ public class Mission extends Fragment implements View.OnClickListener {
                 getActivity().onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(missionID);
     }
 }
 

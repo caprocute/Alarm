@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.fragment;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -11,10 +11,10 @@ import java.net.URL;
 
 import vious.untral.kaku.alarm.R;
 
-public class MissionPicutre extends Mission {
+public class MissionFragmentPicutre extends MissionFragment {
     private URL imageLink;
 
-    public MissionPicutre() {
+    public MissionFragmentPicutre() {
         missionID = 1;
     }
 

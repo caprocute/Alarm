@@ -13,7 +13,7 @@ import java.util.List;
 import vious.untral.kaku.alarm.Model.Alarm;
 
 
-public class MyDatabaseHelper extends SQLiteOpenHelper {
+public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
 
     private static final String TAG = "SQLite";
 
@@ -40,14 +40,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ALARM_ISENABLE = "Alarm_Enable";
     private static final String COLUMN_ALARM_RINGTONE = "Alarm_Ringtone";
 
-    public MyDatabaseHelper(Context context) {
+    public MyDatabaseHelperAlarm(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // Tạo các bảng.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "MyDatabaseHelper.onCreate ... ");
+        Log.i(TAG, "MyDatabaseHelperAlarm.onCreate ... ");
         // Script tạo bảng.
         String script = "CREATE TABLE IF NOT EXISTS " + TABLE_ALARM + "("
                 + COLUMN_ALARM_ID + " INTEGER PRIMARY KEY,"
@@ -69,7 +69,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        Log.i(TAG, "MyDatabaseHelper.onUpgrade ... ");
+        Log.i(TAG, "MyDatabaseHelperAlarm.onUpgrade ... ");
 
         // Hủy (drop) bảng cũ nếu nó đã tồn tại.
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALARM);
@@ -93,7 +93,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public void addAlarm(Alarm Alarm) {
-        Log.i(TAG, "MyDatabaseHelper.addAlarm ... " + Alarm.getId());
+        Log.i(TAG, "MyDatabaseHelperAlarm.addAlarm ... " + Alarm.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -129,7 +129,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public Alarm getAlarm(int id) {
-        Log.i(TAG, "MyDatabaseHelper.getAlarm ... " + id);
+        Log.i(TAG, "MyDatabaseHelperAlarm.getAlarm ... " + id);
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -164,7 +164,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public List<Alarm> getAllAlarms() {
-        Log.i(TAG, "MyDatabaseHelper.getAllAlarms ... ");
+        Log.i(TAG, "MyDatabaseHelperAlarm.getAllAlarms ... ");
 
         List<Alarm> AlarmList = new ArrayList<Alarm>();
         // Select All Query
@@ -210,7 +210,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int getAlarmsCount() {
-        Log.i(TAG, "MyDatabaseHelper.getAlarmsCount ... ");
+        Log.i(TAG, "MyDatabaseHelperAlarm.getAlarmsCount ... ");
 
         String countQuery = "SELECT  * FROM " + TABLE_ALARM;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -226,7 +226,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public int updateAlarm(Alarm Alarm) {
-        Log.i(TAG, "MyDatabaseHelper.updateAlarm ... " + Alarm.getId());
+        Log.i(TAG, "MyDatabaseHelperAlarm.updateAlarm ... " + Alarm.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -248,7 +248,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteAlarm(Alarm Alarm) {
-        Log.i(TAG, "MyDatabaseHelper.updateAlarm ... " + Alarm.getId());
+        Log.i(TAG, "MyDatabaseHelperAlarm.updateAlarm ... " + Alarm.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ALARM, COLUMN_ALARM_ID + " = ?",

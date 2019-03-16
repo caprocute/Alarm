@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.fragment;
 
 import android.content.Context;
 import android.hardware.SensorManager;
@@ -15,10 +15,10 @@ import android.widget.TextView;
 import vious.untral.kaku.alarm.R;
 import vious.untral.kaku.alarm.Tool.ShakeDetector;
 
-public class MissionShake extends Mission implements ShakeDetector.Listener {
+public class MissionFragmentShake extends MissionFragment implements ShakeDetector.Listener {
     private int number;
 
-    public MissionShake() {
+    public MissionFragmentShake() {
         missionID = 2;
     }
 

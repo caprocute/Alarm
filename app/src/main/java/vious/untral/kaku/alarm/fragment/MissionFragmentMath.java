@@ -1,4 +1,4 @@
-package vious.untral.kaku.alarm.Model;
+package vious.untral.kaku.alarm.fragment;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import vious.untral.kaku.alarm.R;
 
-public class MissionMath extends Mission implements OnClickListener, View.OnLongClickListener {
+public class MissionFragmentMath extends MissionFragment implements OnClickListener, View.OnLongClickListener {
     int numProblems;
     int difficult;
     private Button btn_cal_1, btn_cal_2, btn_cal_3, btn_cal_4, btn_cal_5, btn_cal_6, btn_cal_7, btn_cal_8, btn_cal_9, btn_cal_0, btn_cal_del, btn_cal_ok, btnSnooze;
@@ -27,7 +27,7 @@ public class MissionMath extends Mission implements OnClickListener, View.OnLong
     private int randomNumber1, randomNumber2, randomNumber3;
     private int result, randomPostion;
 
-    public MissionMath() {
+    public MissionFragmentMath() {
         missionID = 3;
     }
 

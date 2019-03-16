@@ -17,14 +17,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Model.Mission;
-import vious.untral.kaku.alarm.Model.MissionMath;
-import vious.untral.kaku.alarm.Model.MissionPicutre;
-import vious.untral.kaku.alarm.Model.MissionQR;
-import vious.untral.kaku.alarm.Model.MissionShake;
+import vious.untral.kaku.alarm.fragment.MissionFragment;
+import vious.untral.kaku.alarm.fragment.MissionFragmentMath;
+import vious.untral.kaku.alarm.fragment.MissionFragmentPicutre;
+import vious.untral.kaku.alarm.fragment.MissionFragmentQR;
+import vious.untral.kaku.alarm.fragment.MissionFragmentShake;
 import vious.untral.kaku.alarm.R;
 
 public class AlarmScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,7 +56,7 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private Mission mMission;
+    private MissionFragment mMissionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,25 +71,25 @@ public class AlarmScreenActivity extends AppCompatActivity implements View.OnCli
 
         switch (mAlarm.getMissionAlarm()) {
             case 0:
-                mMission = new Mission();
+                mMissionFragment = new MissionFragment();
                 break;
             case 1:
-                mMission = new MissionPicutre();
+                mMissionFragment = new MissionFragmentPicutre();
                 break;
             case 2:
-                mMission = new MissionShake();
+                mMissionFragment = new MissionFragmentShake();
                 break;
             case 3:
-                mMission = new MissionMath();
+                mMissionFragment = new MissionFragmentMath();
                 break;
             case 4:
-                mMission = new MissionQR();
+                mMissionFragment = new MissionFragmentQR();
                 break;
         }
 
         if (savedInstanceState == null) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(moduleVerifyAlarmScreen.getId(), mMission).commit();
+            ft.add(moduleVerifyAlarmScreen.getId(), mMissionFragment).commit();
         }
 
         mediaPlayer = MediaPlayer.create(this, R.raw.default_alarm);

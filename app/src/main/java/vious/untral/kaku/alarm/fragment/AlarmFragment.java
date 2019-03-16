@@ -16,7 +16,7 @@ import java.util.List;
 import vious.untral.kaku.alarm.Adapter.MyAlarmRecyclerViewAdapter;
 import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.R;
-import vious.untral.kaku.alarm.Tool.MyDatabaseHelper;
+import vious.untral.kaku.alarm.Tool.MyDatabaseHelperAlarm;
 
 /**
  * A fragment representing a list of Items.
@@ -78,9 +78,9 @@ public class AlarmFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(mContext, mColumnCount));
             }
 
-            MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
-            myDatabaseHelper.createDefaultAlarmsIfNeed();
-            adapterData = myDatabaseHelper.getAllAlarms();
+            MyDatabaseHelperAlarm myDatabaseHelperAlarm = new MyDatabaseHelperAlarm(mContext);
+            myDatabaseHelperAlarm.createDefaultAlarmsIfNeed();
+            adapterData = myDatabaseHelperAlarm.getAllAlarms();
 
             myAlarmRecyclerViewAdapter = new MyAlarmRecyclerViewAdapter(adapterData, mListener, getActivity());
             recyclerView.setAdapter(myAlarmRecyclerViewAdapter);
@@ -96,10 +96,10 @@ public class AlarmFragment extends Fragment {
 
 
     public boolean deleteAlarm(int postion) {
-        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
+        MyDatabaseHelperAlarm myDatabaseHelperAlarm = new MyDatabaseHelperAlarm(mContext);
 
         Alarm alarm = adapterData.get(postion);
-        myDatabaseHelper.deleteAlarm(alarm);
+        myDatabaseHelperAlarm.deleteAlarm(alarm);
         adapterData.remove(postion);
         myAlarmRecyclerViewAdapter.notifyDataSetChanged();
 
@@ -107,8 +107,8 @@ public class AlarmFragment extends Fragment {
     }
 
     public boolean updateAlarm(int postion, Alarm alarm) {
-        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
-        myDatabaseHelper.updateAlarm(alarm);
+        MyDatabaseHelperAlarm myDatabaseHelperAlarm = new MyDatabaseHelperAlarm(mContext);
+        myDatabaseHelperAlarm.updateAlarm(alarm);
 
         adapterData.set(postion, alarm);
         myAlarmRecyclerViewAdapter.notifyDataSetChanged();
@@ -134,8 +134,8 @@ public class AlarmFragment extends Fragment {
     }
 
     public void addAlarm(Alarm mAlarm) {
-        MyDatabaseHelper myDatabaseHelper = new MyDatabaseHelper(mContext);
-        myDatabaseHelper.addAlarm(mAlarm);
+        MyDatabaseHelperAlarm myDatabaseHelperAlarm = new MyDatabaseHelperAlarm(mContext);
+        myDatabaseHelperAlarm.addAlarm(mAlarm);
 
         adapterData.add(mAlarm);
         myAlarmRecyclerViewAdapter.notifyDataSetChanged();

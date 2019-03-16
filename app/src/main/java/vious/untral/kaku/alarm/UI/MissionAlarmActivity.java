@@ -24,18 +24,18 @@ import vious.untral.kaku.alarm.Tool.LinePagerIndicatorDecoration;
 import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.Tool.FlingRecycleView;
 import vious.untral.kaku.alarm.Adapter.ImageCardAdapter;
-import vious.untral.kaku.alarm.Model.Mission;
-import vious.untral.kaku.alarm.Model.MissionMath;
-import vious.untral.kaku.alarm.Model.MissionPicutre;
-import vious.untral.kaku.alarm.Model.MissionQR;
-import vious.untral.kaku.alarm.Model.MissionShake;
+import vious.untral.kaku.alarm.fragment.MissionFragment;
+import vious.untral.kaku.alarm.fragment.MissionFragmentMath;
+import vious.untral.kaku.alarm.fragment.MissionFragmentPicutre;
+import vious.untral.kaku.alarm.fragment.MissionFragmentQR;
+import vious.untral.kaku.alarm.fragment.MissionFragmentShake;
 import vious.untral.kaku.alarm.R;
 
 public class MissionAlarmActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Integer> mResId;
     private ImageView mPagerBg;
 
-    private List<Mission> missionList = new ArrayList<>(5);
+    private List<MissionFragment> missionFragmentList = new ArrayList<>(5);
     private FlingRecycleView mPagerRecycleView;
     private Button btnCancel, btnOk;
 
@@ -65,13 +65,13 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
 
         mPagerRecycleView = (FlingRecycleView) findViewById(R.id.rc_1);
 
-        Mission mission = new MissionQR();
+        MissionFragment missionFragment = new MissionFragmentQR();
 
-        missionList.add(new Mission());
-        missionList.add(new MissionPicutre());
-        missionList.add(new MissionShake());
-        missionList.add(new MissionMath());
-        missionList.add(new MissionQR());
+        missionFragmentList.add(new MissionFragment());
+        missionFragmentList.add(new MissionFragmentPicutre());
+        missionFragmentList.add(new MissionFragmentShake());
+        missionFragmentList.add(new MissionFragmentMath());
+        missionFragmentList.add(new MissionFragmentQR());
 
         mPagerRecycleView.setFlingAble(false);
         mPagerRecycleView.addItemDecoration(new LinePagerIndicatorDecoration());
@@ -90,7 +90,7 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
         });
         layoutManager.setItemTransformer(new ScaleTransformer());
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        ImageCardAdapter imageAdapter = new ImageCardAdapter(missionList, (int) (displayMetrics.widthPixels * 0.55f), (int) (displayMetrics.heightPixels * 0.55f), this, mAlarm);
+        ImageCardAdapter imageAdapter = new ImageCardAdapter(missionFragmentList, (int) (displayMetrics.widthPixels * 0.55f), (int) (displayMetrics.heightPixels * 0.55f), this, mAlarm);
         imageAdapter.setOnItemClickListener(new ImageCardAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

@@ -15,22 +15,23 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
-import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Model.Mission;
-import vious.untral.kaku.alarm.UI.AlarmScreenActivity;
 import vious.untral.kaku.alarm.BuildConfig;
+import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.fragment.MissionFragment;
 import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.UI.AlarmScreenActivity;
+import vious.untral.kaku.alarm.UI.QrSettingScreen;
 
 public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "ImageCardAdapter";
-    private List<Mission> items;
+    private List<MissionFragment> items;
     private OnItemClickListener mOnItemClickListener;
     private int mWidth;
     private int mHeight;
     private Context context;
     private Alarm alarm;
 
-    public ImageCardAdapter(List<Mission> items, int width, int height, Context context, Alarm alarm) {
+    public ImageCardAdapter(List<MissionFragment> items, int width, int height, Context context, Alarm alarm) {
         this.items = items;
         this.context = context;
         mWidth = width;
@@ -61,7 +62,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onBindViewHolder: position:" + position);
         }
-        final Mission item = items.get(position);
+        final MissionFragment item = items.get(position);
         switch (item.getMissionID()) {
             case 0:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.alarm));
@@ -97,6 +98,17 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
                 context.startActivity(new Intent(context, AlarmScreenActivity.class)
                         .putExtra("alarm", createDemo(alarm, position))
                         .putExtra("isdemo", true));
+            }
+        });
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (item.getMissionID()) {
+                    case 4:
+                        context.startActivity(new Intent(context, QrSettingScreen.class)
+                                .putExtra("alarm", items.get(position)));
+                        break;
+                }
             }
         });
     }
@@ -143,9 +155,11 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
         public ImageView image;
         public TextView textView, txtSetting;
         public ImageView imageView;
+        public View mView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mView = itemView;
             image = (ImageView) itemView.findViewById(R.id.imageView6);
             textView = (TextView) itemView.findViewById(R.id.textView6);
             imageView = (ImageView) itemView.findViewById(R.id.imageView7);

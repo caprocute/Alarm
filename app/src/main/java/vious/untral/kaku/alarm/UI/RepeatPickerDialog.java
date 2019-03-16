@@ -30,7 +30,7 @@ public class RepeatPickerDialog extends AlertDialog implements View.OnClickListe
     private AlarmDetailActivity mAlarmDetailActivity;
     private boolean[] updateRepeat;
 
-    protected RepeatPickerDialog(AlarmDetailActivity context, boolean[] repeat) {
+    public RepeatPickerDialog(AlarmDetailActivity context, boolean[] repeat) {
         super(context);
         this.mAlarmDetailActivity = context;
         this.updateRepeat = repeat;
