@@ -16,21 +16,29 @@ import android.widget.TextView;
 import java.util.List;
 
 import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Model.QrCode;
+import vious.untral.kaku.alarm.Model.Mission;
 import vious.untral.kaku.alarm.R;
-import vious.untral.kaku.alarm.Tool.MyDatabaseHelperQR;
+import vious.untral.kaku.alarm.Tool.MyDatabaseHelperMission;
 
 public class QRAdapter extends RecyclerView.Adapter<QRAdapter.ViewHolder> {
 
-    List<QrCode> qrCodeList;
+    List<Mission> missionList;
     private String TAG = "HIEUHK";
     private int lastCheckedPosition = -1;
+
+
+    public QRAdapter(Context applicationContext, List<Mission> datas) {
+        mContext = applicationContext;
+        missionList = datas;
+    }
+
     private Context mContext;
 
-
-    public QRAdapter(Context applicationContext, List<QrCode> datas) {
-        mContext = applicationContext;
-        qrCodeList = datas;
+    public Mission getCheckedMission() {
+        if (lastCheckedPosition != -1) {
+            return missionList.get(lastCheckedPosition);
+        }
+        return null;
     }
 
     @Override
@@ -44,8 +52,8 @@ public class QRAdapter extends RecyclerView.Adapter<QRAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: ");
-        holder.radioContent.setText(qrCodeList.get(position).getContent());
-        holder.txtName.setText(qrCodeList.get(position).getName());
+        holder.radioContent.setText(missionList.get(position).getContent());
+        holder.txtName.setText(missionList.get(position).getName());
         holder.btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,11 +90,11 @@ public class QRAdapter extends RecyclerView.Adapter<QRAdapter.ViewHolder> {
                     @Override
                     public void onClick(View v) {
                         // TODO Auto-generated method stub
-                        MyDatabaseHelperQR myDatabaseHelperQR = new MyDatabaseHelperQR(mContext);
-                        myDatabaseHelperQR.deleteQR(qrCodeList.get(position));
-                        qrCodeList.remove(position);
+                        MyDatabaseHelperMission myDatabaseHelperMission = new MyDatabaseHelperMission(mContext);
+                        myDatabaseHelperMission.deleteMISSION(missionList.get(position));
+                        missionList.remove(position);
                         notifyItemRemoved(position); // notify the adapter about the removed item
-                        notifyItemRangeChanged(position, qrCodeList.size());
+                        notifyItemRangeChanged(position, missionList.size());
                         b.dismiss();
                     }
                 });
@@ -105,8 +113,8 @@ public class QRAdapter extends RecyclerView.Adapter<QRAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: " + qrCodeList.size());
-        return qrCodeList.size();
+        Log.d(TAG, "getItemCount: " + missionList.size());
+        return missionList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

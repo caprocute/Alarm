@@ -5,8 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,21 +15,20 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import github.hellocsl.layoutmanager.gallery.GalleryLayoutManager;
-import vious.untral.kaku.alarm.Tool.LinePagerIndicatorDecoration;
-import vious.untral.kaku.alarm.Model.Alarm;
-import vious.untral.kaku.alarm.Tool.FlingRecycleView;
 import vious.untral.kaku.alarm.Adapter.ImageCardAdapter;
+import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.FlingRecycleView;
+import vious.untral.kaku.alarm.Tool.LinePagerIndicatorDecoration;
 import vious.untral.kaku.alarm.fragment.MissionFragment;
 import vious.untral.kaku.alarm.fragment.MissionFragmentMath;
 import vious.untral.kaku.alarm.fragment.MissionFragmentPicutre;
 import vious.untral.kaku.alarm.fragment.MissionFragmentQR;
 import vious.untral.kaku.alarm.fragment.MissionFragmentShake;
-import vious.untral.kaku.alarm.R;
 
 public class MissionAlarmActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Integer> mResId;
@@ -38,6 +37,8 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
     private List<MissionFragment> missionFragmentList = new ArrayList<>(5);
     private FlingRecycleView mPagerRecycleView;
     private Button btnCancel, btnOk;
+
+    public static final int REQUEST_SETTING_QR = 5951;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void setStatusBarGradiant(Activity activity) {
@@ -102,6 +103,8 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
                     case 3:
                         break;
                     case 4:
+                        startActivityForResult(new Intent(MissionAlarmActivity.this, QrSettingScreen.class)
+                                .putExtra("alarm", mAlarm), REQUEST_SETTING_QR);
                         break;
                 }
             }
@@ -118,6 +121,20 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_SETTING_QR) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
     }
 
     @Override

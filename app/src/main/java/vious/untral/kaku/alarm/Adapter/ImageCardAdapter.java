@@ -100,7 +100,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
                         .putExtra("isdemo", true));
             }
         });
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+       /* holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (item.getMissionID()) {
@@ -110,7 +110,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
                         break;
                 }
             }
-        });
+        });*/
     }
 
     private Alarm createDemo(Alarm alarm, int position) {
