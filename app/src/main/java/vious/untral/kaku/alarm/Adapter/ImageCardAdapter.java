@@ -20,7 +20,6 @@ import vious.untral.kaku.alarm.Model.Alarm;
 import vious.untral.kaku.alarm.fragment.MissionFragment;
 import vious.untral.kaku.alarm.R;
 import vious.untral.kaku.alarm.UI.AlarmScreenActivity;
-import vious.untral.kaku.alarm.UI.QrSettingScreen;
 
 public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "ImageCardAdapter";
@@ -105,7 +104,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
             public void onClick(View v) {
                 switch (item.getMissionID()) {
                     case 4:
-                        context.startActivity(new Intent(context, QrSettingScreen.class)
+                        context.startActivity(new Intent(context, SettingQrScreen.class)
                                 .putExtra("alarm", items.get(position)));
                         break;
                 }

@@ -1,9 +1,14 @@
 package vious.untral.kaku.alarm.UI;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +32,7 @@ import vious.untral.kaku.alarm.Tool.MyDatabaseHelperMission;
 import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.fragment.AlarmFragment;
 
-public class QrSettingScreen extends AppCompatActivity {
+public class SettingQrScreen extends AppCompatActivity {
     private List<Mission> missionList;
     private Button btnOkQr, btnCancelQr;
     private FloatingActionButton floatAddQR;
@@ -43,7 +48,7 @@ public class QrSettingScreen extends AppCompatActivity {
         Unitls.setStatusBarGradiant(this);
 
         btnOkQr = (Button) findViewById(R.id.btnOkQr);
-        btnCancelQr = (Button) findViewById(R.id.btnCancelQR);
+        btnCancelQr = (Button) findViewById(R.id.btnCancelPicture);
         floatAddQR = (FloatingActionButton) findViewById(R.id.floatAddQR);
 
         txtNone = (TextView) findViewById(R.id.txtNoneWarningQR);
@@ -53,16 +58,16 @@ public class QrSettingScreen extends AppCompatActivity {
         floatAddQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                IntentIntegrator integrator = new IntentIntegrator(QrSettingScreen.this);
-
-                integrator.setPrompt(getResources().getString(R.string.scan_a_bar_code));
-                integrator.setCameraId(0);  // Use a specific camera of the device
-                integrator.setOrientationLocked(true);
-                integrator.setBeepEnabled(true);
-                integrator.setCaptureActivity(CaptureQRActivity.class);
-                integrator.initiateScan();
-
+                int apiVersion = android.os.Build.VERSION.SDK_INT;
+                if (apiVersion >= android.os.Build.VERSION_CODES.M) {
+                    if (!checkPermission()) {
+                        requestPermission();
+                    } else {
+                        openCaptureScreen();
+                    }
+                } else {
+                    openCaptureScreen();
+                }
             }
         });
         btnCancelQr.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +89,53 @@ public class QrSettingScreen extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openCaptureScreen() {
+        IntentIntegrator integrator = new IntentIntegrator(SettingQrScreen.this);
+
+        integrator.setPrompt(getResources().getString(R.string.scan_a_bar_code));
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.setOrientationLocked(true);
+        integrator.setBeepEnabled(true);
+        integrator.setCaptureActivity(CaptureQRActivity.class);
+        integrator.initiateScan();
+    }
+
+    private void showMessage(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    private static final int REQUEST_CAMERA = 1;
+
+    private boolean checkPermission() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(SettingQrScreen.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0) {
+
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted) {
+                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
+                        openCaptureScreen();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
     }
 
     @Override
@@ -141,7 +193,7 @@ public class QrSettingScreen extends AppCompatActivity {
                             txtNone.setVisibility((missionList.size() == 0) ? View.VISIBLE : View.GONE);
                             listView.setVisibility((missionList.size() == 0) ? View.GONE : View.VISIBLE);
 
-                            MyDatabaseHelperMission myDatabaseHelperMission = new MyDatabaseHelperMission(QrSettingScreen.this);
+                            MyDatabaseHelperMission myDatabaseHelperMission = new MyDatabaseHelperMission(SettingQrScreen.this);
                             myDatabaseHelperMission.addMISSION(mission);
                             qrAdapter.notifyDataSetChanged();
 
@@ -179,7 +231,7 @@ public class QrSettingScreen extends AppCompatActivity {
         listView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(QrSettingScreen.this, "hello", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingQrScreen.this, "hello", Toast.LENGTH_SHORT).show();
             }
         });
 

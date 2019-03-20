@@ -101,9 +101,11 @@ public class MissionAlarmActivity extends AppCompatActivity implements View.OnCl
                     case 2:
                         break;
                     case 3:
+                        startActivityForResult(new Intent(MissionAlarmActivity.this, SettingMathScreen.class)
+                                .putExtra("alarm", mAlarm), REQUEST_SETTING_QR);
                         break;
                     case 4:
-                        startActivityForResult(new Intent(MissionAlarmActivity.this, QrSettingScreen.class)
+                        startActivityForResult(new Intent(MissionAlarmActivity.this, SettingQrScreen.class)
                                 .putExtra("alarm", mAlarm), REQUEST_SETTING_QR);
                         break;
                 }
