@@ -87,19 +87,16 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                     holder.mLabel.setTextColor(mContext.getResources().getColor(R.color.white));
 
                     switch (mValues.get(position).getMissionAlarm()) {
-                        case 0:
+                        case Unitls.MISSION_DEFAULT:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm));
                             break;
-                        case 1:
-                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera));
-                            break;
-                        case 2:
+                        case Unitls.MISSION_SHAKE:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration));
                             break;
-                        case 3:
+                        case Unitls.MISSION_CAL:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator));
                             break;
-                        case 4:
+                        case Unitls.MISSION_QR:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode));
                             break;
                     }
@@ -115,19 +112,17 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
                     holder.imageButton.setBackground(mContext.getDrawable(R.drawable.more_off));
 
                     switch (mValues.get(position).getMissionAlarm()) {
-                        case 0:
+                        case Unitls.MISSION_DEFAULT:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm_off));
                             break;
-                        case 1:
-                            holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera_of));
-                            break;
-                        case 2:
+
+                        case Unitls.MISSION_SHAKE:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration_off));
                             break;
-                        case 3:
+                        case Unitls.MISSION_CAL:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator_off));
                             break;
-                        case 4:
+                        case Unitls.MISSION_QR:
                             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode_off));
                             break;
                     }
@@ -137,19 +132,17 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         holder.checkBox.setChecked(mValues.get(position).isEnable());
 
         switch (mValues.get(position).getMissionAlarm()) {
-            case 0:
+            case Unitls.MISSION_DEFAULT:
                 holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.alarm));
                 break;
-            case 1:
-                holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_camera));
-                break;
-            case 2:
+
+            case Unitls.MISSION_SHAKE:
                 holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_vibration));
                 break;
-            case 3:
+            case Unitls.MISSION_CAL:
                 holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_calculator));
                 break;
-            case 4:
+            case Unitls.MISSION_QR:
                 holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.ic_qrcode));
                 break;
         }

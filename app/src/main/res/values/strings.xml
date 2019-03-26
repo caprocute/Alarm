@@ -74,6 +74,17 @@
     <string name="pref_prevent_turn_off_note">Prevent power off when ringging</string>
     <string name="preview_mode">This is Preview mode</string>
     <string name="scan_a_bar_code">Scan a barcode</string>
+    <string name="setting_math_title">Setting Math Mission</string>
+    <string name="setting_math_title_bottom">Do math</string>
+    <string name="do_title">Do</string>
+    <string name="do_title_time">Times</string>
+    <string name="math">math</string>
+    <string name="setting_shake_title">Setting Shake Mission</string>
+    <string name="setting_shake_title_bottom">Sensitivity</string>
+    <string name="do_title_shake">Shake your phone</string>
+    <string name="easy">Easy</string>
+    <string name="normal">Normal</string>
+    <string name="hard">Hard</string>
 
 
 </resources>

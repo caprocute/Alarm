@@ -17,6 +17,7 @@ import java.util.List;
 
 import vious.untral.kaku.alarm.BuildConfig;
 import vious.untral.kaku.alarm.Model.Alarm;
+import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.fragment.MissionFragment;
 import vious.untral.kaku.alarm.R;
 import vious.untral.kaku.alarm.UI.AlarmScreenActivity;
@@ -63,27 +64,22 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
         }
         final MissionFragment item = items.get(position);
         switch (item.getMissionID()) {
-            case 0:
+            case Unitls.MISSION_DEFAULT:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.alarm));
                 holder.textView.setText(context.getText(R.string.Default));
                 holder.txtSetting.setVisibility(View.GONE);
                 break;
-            case 1:
-                holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_camera));
-                holder.txtSetting.setVisibility(View.VISIBLE);
-                holder.textView.setText(context.getText(R.string.Picture));
-                break;
-            case 2:
+            case Unitls.MISSION_SHAKE:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_vibration));
                 holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Shake));
                 break;
-            case 3:
+            case Unitls.MISSION_CAL:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_calculator));
                 holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Math));
                 break;
-            case 4:
+            case Unitls.MISSION_QR:
                 holder.image.setImageDrawable(context.getDrawable(R.drawable.ic_qrcode));
                 holder.txtSetting.setVisibility(View.VISIBLE);
                 holder.textView.setText(context.getText(R.string.Scan));
@@ -99,17 +95,7 @@ public class ImageCardAdapter extends RecyclerView.Adapter<ImageCardAdapter.View
                         .putExtra("isdemo", true));
             }
         });
-       /* holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (item.getMissionID()) {
-                    case 4:
-                        context.startActivity(new Intent(context, SettingQrScreen.class)
-                                .putExtra("alarm", items.get(position)));
-                        break;
-                }
-            }
-        });*/
+
     }
 
     private Alarm createDemo(Alarm alarm, int position) {

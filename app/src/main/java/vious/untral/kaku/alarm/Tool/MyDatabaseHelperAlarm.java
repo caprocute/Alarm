@@ -33,6 +33,7 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
     private static final String COLUMN_ALARM_HOUR = "Alarm_Hour";
     private static final String COLUMN_ALARM_REPEAT_ID = "Alarm_Repeat_Id";
     private static final String COLUMN_ALARM_MISSION = "Alarm_Mission";
+    private static final String COLUMN_ALARM_MISSION_ID = "Alarm_Mission_ID";
     private static final String COLUMN_ALARM_MINUTE = "Alarm_Minute";
     private static final String COLUMN_ALARM_VIBRATE = "Alarm_Vibrate";
     private static final String COLUMN_ALARM_SNOOZE = "Alarm_Snooze";
@@ -52,6 +53,7 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
         String script = "CREATE TABLE IF NOT EXISTS " + TABLE_ALARM + "("
                 + COLUMN_ALARM_ID + " INTEGER PRIMARY KEY,"
                 + COLUMN_ALARM_MISSION + " INTEGER,"
+                + COLUMN_ALARM_MISSION_ID + " TEXT,"
                 + COLUMN_ALARM_HOUR + " INTEGER,"
                 + COLUMN_ALARM_MINUTE + " INTEGER,"
                 + COLUMN_ALARM_REPEAT_ID + " INTEGER,"
@@ -100,6 +102,7 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ALARM_ID, Alarm.getId());
         values.put(COLUMN_ALARM_MISSION, Alarm.getMissionAlarm());
+        values.put(COLUMN_ALARM_MISSION_ID, Alarm.getMissionAlarmId());
         values.put(COLUMN_ALARM_HOUR, Alarm.getHour());
         values.put(COLUMN_ALARM_MINUTE, Alarm.getMinute());
         values.put(COLUMN_ALARM_REPEAT_ID, createRepeatString(Alarm.getRepeat()));
@@ -135,6 +138,7 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_ALARM, new String[]{COLUMN_ALARM_ID,
                         COLUMN_ALARM_MISSION,
+                        COLUMN_ALARM_MISSION_ID,
                         COLUMN_ALARM_HOUR,
                         COLUMN_ALARM_MINUTE,
                         COLUMN_ALARM_REPEAT_ID,
@@ -150,14 +154,15 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
         Alarm Alarm = new Alarm(
                 Integer.parseInt(cursor.getString(0)),
                 Integer.parseInt(cursor.getString(1)),
-                Integer.parseInt(cursor.getString(2)),
+                cursor.getString(2),
                 Integer.parseInt(cursor.getString(3)),
-                convertTorepeat(cursor.getString(4)),
-                Boolean.parseBoolean(cursor.getString(5)),
-                Integer.parseInt(cursor.getString(6)),
-                cursor.getString(7),
-                Boolean.parseBoolean(cursor.getString(8)),
-                cursor.getString(9));
+                Integer.parseInt(cursor.getString(4)),
+                convertTorepeat(cursor.getString(5)),
+                Boolean.parseBoolean(cursor.getString(6)),
+                Integer.parseInt(cursor.getString(7)),
+                cursor.getString(8),
+                Boolean.parseBoolean(cursor.getString(9)),
+                cursor.getString(10));
         // return Alarm
         return Alarm;
     }
@@ -180,14 +185,15 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
                 Alarm Alarm = new Alarm();
                 Alarm.setId(Integer.parseInt(cursor.getString(0)));
                 Alarm.setMissionAlarm(Integer.parseInt(cursor.getString(1)));
-                Alarm.setHour(Integer.parseInt(cursor.getString(2)));
-                Alarm.setMinute(Integer.parseInt(cursor.getString(3)));
-                Alarm.setRepeat(convertTorepeat(cursor.getString(4)));
-                Alarm.setVibrate(Boolean.parseBoolean(cursor.getString(5)));
-                Alarm.setSnooze(Integer.parseInt(cursor.getString(6)));
-                Alarm.setLabel(cursor.getString(7));
-                Alarm.setRingtone(cursor.getString(8));
-                Alarm.setEnable(Boolean.parseBoolean(cursor.getString(9)));
+                Alarm.setMissionAlarmId(cursor.getString(2));
+                Alarm.setHour(Integer.parseInt(cursor.getString(3)));
+                Alarm.setMinute(Integer.parseInt(cursor.getString(4)));
+                Alarm.setRepeat(convertTorepeat(cursor.getString(5)));
+                Alarm.setVibrate(Boolean.parseBoolean(cursor.getString(6)));
+                Alarm.setSnooze(Integer.parseInt(cursor.getString(7)));
+                Alarm.setLabel(cursor.getString(8));
+                Alarm.setRingtone(cursor.getString(9));
+                Alarm.setEnable(Boolean.parseBoolean(cursor.getString(10)));
 
                 // Thêm vào danh sách.
                 AlarmList.add(Alarm);
@@ -233,6 +239,7 @@ public class MyDatabaseHelperAlarm extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ALARM_ID, Alarm.getId());
         values.put(COLUMN_ALARM_MISSION, Alarm.getMissionAlarm());
+        values.put(COLUMN_ALARM_MISSION_ID, Alarm.getMissionAlarmId());
         values.put(COLUMN_ALARM_HOUR, Alarm.getHour());
         values.put(COLUMN_ALARM_MINUTE, Alarm.getMinute());
         values.put(COLUMN_ALARM_REPEAT_ID, createRepeatString(Alarm.getRepeat()));

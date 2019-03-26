@@ -196,23 +196,20 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
     private void loadAlarmData(Alarm mAlarm) {
         if (mAlarm != null) {
             switch (mAlarm.getMissionAlarm()) {
-                case 0:
+                case Unitls.MISSION_DEFAULT:
                     txtMissionAlarm.setText(R.string.Default);
                     imageView.setImageDrawable(getDrawable(R.drawable.alarm));
                     break;
-                case 1:
-                    txtMissionAlarm.setText(R.string.Picture);
-                    imageView.setImageDrawable(getDrawable(R.drawable.ic_camera));
-                    break;
-                case 2:
+
+                case Unitls.MISSION_SHAKE:
                     txtMissionAlarm.setText(R.string.Shake);
                     imageView.setImageDrawable(getDrawable(R.drawable.ic_vibration));
                     break;
-                case 3:
+                case Unitls.MISSION_CAL:
                     txtMissionAlarm.setText(R.string.Math);
                     imageView.setImageDrawable(getDrawable(R.drawable.ic_calculator));
                     break;
-                case 4:
+                case Unitls.MISSION_QR:
                     txtMissionAlarm.setText(R.string.Scan);
                     imageView.setImageDrawable(getDrawable(R.drawable.ic_qrcode));
                     break;
@@ -339,18 +336,6 @@ public class AlarmDetailActivity extends AppCompatActivity implements View.OnCli
                 returnIntent.putExtra("alarm", mAlarm);
                 returnIntent.putExtra("isdel", false);
                 returnIntent.putExtra("postion", mPostion);
-
-               /* int hour = 5;
-                Intent i = new Intent(AlarmDetailActivity.this, AlarmBroadcast.class);
-                i.setAction("hieuhk");
-                i.putExtra("alarm", ParcelableUtil.marshall(mAlarm));
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + hour * 1000, pendingIntent);*/
-
-/*
-                setAlarmFromNow(AlarmDetailActivity.this, mAlarm);
-*/
 
                 if (isNew == false) setResult(MainActivity.UPDATE_ALARM, returnIntent);
                 else

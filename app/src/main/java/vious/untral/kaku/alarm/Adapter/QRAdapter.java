@@ -24,6 +24,15 @@ public class QRAdapter extends RecyclerView.Adapter<QRAdapter.ViewHolder> {
 
     List<Mission> missionList;
     private String TAG = "HIEUHK";
+
+    public int getLastCheckedPosition() {
+        return lastCheckedPosition;
+    }
+
+    public void setLastCheckedPosition(int lastCheckedPosition) {
+        this.lastCheckedPosition = lastCheckedPosition;
+    }
+
     private int lastCheckedPosition = -1;
 
 

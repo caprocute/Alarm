@@ -16,6 +16,7 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.Unitls;
 
 public class MissionFragmentQR extends MissionFragment implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMERA = 1;
@@ -23,7 +24,7 @@ public class MissionFragmentQR extends MissionFragment implements ZXingScannerVi
     private ZXingScannerView scannerView;
 
     public MissionFragmentQR() {
-        missionID = 4;
+        missionID = Unitls.MISSION_QR;
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.Unitls;
 
 public class MissionFragment extends Fragment implements View.OnClickListener, Parcelable {
     protected int missionID;
@@ -34,7 +35,7 @@ public class MissionFragment extends Fragment implements View.OnClickListener, P
     };
 
     public MissionFragment() {
-        missionID = 0;
+        missionID = Unitls.MISSION_DEFAULT;
     }
 
     @SuppressLint("ValidFragment")

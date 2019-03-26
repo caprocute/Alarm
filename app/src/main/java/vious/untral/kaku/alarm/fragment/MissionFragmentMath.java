@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.concurrent.ThreadLocalRandom;
 
 import vious.untral.kaku.alarm.R;
+import vious.untral.kaku.alarm.Tool.Unitls;
 
 public class MissionFragmentMath extends MissionFragment implements OnClickListener, View.OnLongClickListener {
     int numProblems;
@@ -28,7 +29,7 @@ public class MissionFragmentMath extends MissionFragment implements OnClickListe
     private int result, randomPostion;
 
     public MissionFragmentMath() {
-        missionID = 3;
+        missionID = Unitls.MISSION_CAL;
     }
 
     @Override

@@ -107,8 +107,6 @@ public class Mission implements Parcelable {
         switch (missionType) {
             case Unitls.MISSION_DEFAULT:
                 return ("DEF" + number + text);
-            case Unitls.MISSION_CAMERA:
-                return ("CAM" + number + text);
             case Unitls.MISSION_SHAKE:
                 return ("SHAKE" + number + text);
             case Unitls.MISSION_CAL:

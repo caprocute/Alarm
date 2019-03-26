@@ -28,10 +28,9 @@ import static android.content.Context.ALARM_SERVICE;
 public class Unitls {
     public static final int PICKER_RINGTONE = 1;
     public static final int MISSION_DEFAULT = 0;
-    public static final int MISSION_CAMERA = 1;
-    public static final int MISSION_SHAKE = 2;
-    public static final int MISSION_CAL = 3;
-    public static final int MISSION_QR = 4;
+    public static final int MISSION_SHAKE = 1;
+    public static final int MISSION_CAL = 2;
+    public static final int MISSION_QR = 3;
     public static boolean[] weekkenddays = new boolean[]{false, false, false, false, false, true, true};
     public static boolean[] weekdays = new boolean[]{true, true, true, true, true, false, false};
     public static boolean[] everyday = new boolean[]{true, true, true, true, true, true, true};

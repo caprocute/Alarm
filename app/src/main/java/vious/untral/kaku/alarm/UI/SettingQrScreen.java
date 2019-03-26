@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vious.untral.kaku.alarm.Adapter.QRAdapter;
@@ -33,19 +34,23 @@ import vious.untral.kaku.alarm.Tool.Unitls;
 import vious.untral.kaku.alarm.fragment.AlarmFragment;
 
 public class SettingQrScreen extends AppCompatActivity {
-    private List<Mission> missionList;
+    private List<Mission> missionList = new ArrayList<>();
     private Button btnOkQr, btnCancelQr;
     private FloatingActionButton floatAddQR;
     private RecyclerView listView;
     private TextView txtNone;
     private AlarmFragment.OnListFragmentInteractionListener mListener;
     private QRAdapter qrAdapter;
+    private Mission mMission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_setting_screen);
         Unitls.setStatusBarGradiant(this);
+
+        mMission = getIntent().getParcelableExtra("mission");
+
 
         btnOkQr = (Button) findViewById(R.id.btnOkQr);
         btnCancelQr = (Button) findViewById(R.id.btnCancelPicture);
@@ -210,7 +215,12 @@ public class SettingQrScreen extends AppCompatActivity {
     private void loadData() {
         MyDatabaseHelperMission myDatabaseHelperMission = new MyDatabaseHelperMission(this);
 
-        missionList = myDatabaseHelperMission.getAllMISSIONs();
+        List<Mission> missionListRaw = myDatabaseHelperMission.getAllMISSIONs();
+        for (int i = 0; i < missionListRaw.size(); i++) {
+            if (missionListRaw.get(i).getMissionType() == Unitls.MISSION_QR) {
+                missionList.add(missionListRaw.get(i));
+            }
+        }
         txtNone.setVisibility((missionList.size() == 0) ? View.VISIBLE : View.GONE);
         listView.setVisibility((missionList.size() == 0) ? View.GONE : View.VISIBLE);
 
@@ -234,6 +244,11 @@ public class SettingQrScreen extends AppCompatActivity {
                 Toast.makeText(SettingQrScreen.this, "hello", Toast.LENGTH_SHORT).show();
             }
         });
+        if (mMission != null)
+            for (int i = 0; i < missionList.size(); i++) {
+                if (missionList.get(i) == mMission) qrAdapter.setLastCheckedPosition(i);
+                qrAdapter.notifyDataSetChanged();
+            }
 
     }
 

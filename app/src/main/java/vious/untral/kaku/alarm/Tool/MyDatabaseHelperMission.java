@@ -99,7 +99,7 @@ public class MyDatabaseHelperMission extends SQLiteOpenHelper {
     }
 
 
-    public Mission getMISSION(int id) {
+    public Mission getMISSION(String id) {
         Log.i(TAG, "MyDatabaseHelperMission.getMISSION ... " + id);
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -161,10 +161,10 @@ public class MyDatabaseHelperMission extends SQLiteOpenHelper {
                     MISSION.setPictureUrl(cursor.getString(4));
 
                 if (cursor.getString(5) != null)
-                    MISSION.setNumber(Integer.valueOf(cursor.getString(5)));
+                    MISSION.setLevel(Integer.valueOf(cursor.getString(5)));
 
                 if (cursor.getString(6) != null)
-                    MISSION.setLevel(Integer.valueOf(cursor.getString(6)));
+                    MISSION.setNumber(Integer.valueOf(cursor.getString(6)));
 
                 // Thêm vào danh sách.
                 MISSIONList.add(MISSION);

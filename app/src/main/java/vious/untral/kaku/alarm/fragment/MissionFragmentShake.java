@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import vious.untral.kaku.alarm.R;
 import vious.untral.kaku.alarm.Tool.ShakeDetector;
+import vious.untral.kaku.alarm.Tool.Unitls;
 
 public class MissionFragmentShake extends MissionFragment implements ShakeDetector.Listener {
     private int number;
 
     public MissionFragmentShake() {
-        missionID = 2;
+        missionID = Unitls.MISSION_SHAKE;
     }
 
     private SensorManager mSensorManager;
